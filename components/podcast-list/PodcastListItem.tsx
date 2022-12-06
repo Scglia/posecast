@@ -3,16 +3,16 @@ import { semiBold } from "../../styles/fonts.css";
 
 const PodcastListItem = ({
   podcastTitle,
-  imageUrl,
+  podcastImageUrl,
 }: {
   podcastTitle: string;
-  imageUrl: string;
+  podcastImageUrl: string;
 }) => {
   return (
     <div className={box}>
       <img
         className={image}
-        src={imageUrl}
+        src={podcastImageUrl}
         alt={`Logo of ${podcastTitle}`}
         width="48"
         height="48"

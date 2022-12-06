@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@next/font": "^13.0.6",
+    "@svgr/webpack": "^6.5.1",
     "@vanilla-extract/next-plugin": "^2.1.1"
   }
 }

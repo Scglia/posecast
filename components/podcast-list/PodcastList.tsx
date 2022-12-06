@@ -6,7 +6,10 @@ const PodcastList = ({ podcasts }: { podcasts: any }) => {
     <div className={box}>
       {podcasts.map((item: any) => {
         return (
-          <PodcastListItem imageUrl={item.imageUrl} podcastTitle={item.title} />
+          <PodcastListItem
+            podcastImageUrl={item.imageUrl}
+            podcastTitle={item.title}
+          />
         );
       })}
     </div>
