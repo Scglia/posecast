@@ -7,6 +7,7 @@ export const box = style({
   alignItems: "flex-end",
   padding: 8,
   backgroundColor: "rgb(255, 255, 255)",
+  cursor: "pointer",
 });
 
 globalStyle(`${box} svg`, {
