@@ -1,6 +1,7 @@
 import "../styles/global.css";
 import PodcastList from "../components/podcast-list/PodcastList";
 import Player from "../components/player/Player";
+import EpisodeListItem from "../components/episode-list/EpisodeListItem";
 
 export default function Home() {
   const podcasts = [
@@ -26,6 +27,19 @@ export default function Home() {
         currentTime="4:20"
         episodeDuration="6:09"
         isPlaying={true}
+      />
+      <EpisodeListItem
+        episodeTitle="Episode title wow"
+        episodeDuration="23min"
+        episdeReleaseDate="Dec 6th"
+        isSelected={false}
+      />
+
+      <EpisodeListItem
+        episodeTitle="Episode title wow"
+        episodeDuration="23min"
+        episdeReleaseDate="Dec 6th"
+        isSelected={true}
       />
     </div>
   );
