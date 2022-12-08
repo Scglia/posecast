@@ -11,3 +11,10 @@ export const semiBold = style({
   fontSize: "0.875rem",
   color: "white",
 });
+
+export const title = style({
+  fontWeight: 500,
+  lineHeight: "133%",
+  fontSize: "1.5rem",
+  color: "white",
+});

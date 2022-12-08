@@ -13,6 +13,7 @@ export const episodeImage = style({
   margin: -2,
   marginRight: 0,
   borderRadius: 5,
+  boxShadow: "0 4px 8px 4px rgba(0, 0, 0, 30%)",
 });
 
 export const contentBox = style({

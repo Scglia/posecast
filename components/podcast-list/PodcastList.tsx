@@ -7,6 +7,7 @@ const PodcastList = ({ podcasts }: { podcasts: any }) => {
       {podcasts.map((item: any) => {
         return (
           <PodcastListItem
+            key={item.id}
             podcastImageUrl={item.imageUrl}
             podcastTitle={item.title}
           />

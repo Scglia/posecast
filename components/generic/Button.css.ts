@@ -8,6 +8,7 @@ export const box = style({
   padding: 8,
   backgroundColor: "rgb(255, 255, 255)",
   cursor: "pointer",
+  boxShadow: "0 4px 4px 2px rgb(0 0 0 / 35%)",
 });
 
 globalStyle(`${box} svg`, {

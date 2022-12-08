@@ -5,12 +5,12 @@ import ClockIcon from "../../resources/icons/clock.svg";
 const EpisodeListItem = ({
   episodeTitle,
   episodeDuration,
-  episdeReleaseDate,
+  episodeReleaseDate,
   isSelected,
 }: {
   episodeTitle: string;
   episodeDuration: string;
-  episdeReleaseDate: string;
+  episodeReleaseDate: string;
   isSelected: boolean;
 }) => {
   return (
@@ -20,7 +20,7 @@ const EpisodeListItem = ({
         <ClockIcon />
         {episodeDuration}
         <span>·</span>
-        <span>{episdeReleaseDate}</span>
+        <span>{episodeReleaseDate}</span>
       </div>
     </div>
   );

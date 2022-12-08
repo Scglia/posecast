@@ -4,7 +4,6 @@ import { regular } from "../../styles/fonts.css";
 export const box = style({
   display: "flex",
   flexDirection: "column",
-  alignItems: "left",
   borderRadius: 12,
   padding: 12,
 });
