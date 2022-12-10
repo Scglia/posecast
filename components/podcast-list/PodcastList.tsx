@@ -1,16 +1,22 @@
+import Link from "next/link";
 import { box } from "./PodcastList.css";
 import PodcastListItem from "./PodcastListItem";
 
 const PodcastList = ({ podcasts }: { podcasts: any }) => {
   return (
     <div className={box}>
-      {podcasts.map((item: any) => {
+      {podcasts.map((item: any, index: number) => {
         return (
-          <PodcastListItem
+          <Link
             key={item.id}
-            podcastImageUrl={item.imageUrl}
-            podcastTitle={item.title}
-          />
+            href={`/episodes/${index}`}
+            style={{ textDecoration: "none" }}
+          >
+            <PodcastListItem
+              podcastImageUrl={item.imageUrl}
+              podcastTitle={item.title}
+            />
+          </Link>
         );
       })}
     </div>

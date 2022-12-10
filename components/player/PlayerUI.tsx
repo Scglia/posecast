@@ -6,25 +6,32 @@ import {
   times,
   buttons,
   bottomLine,
-} from "./Player.css";
+} from "./PlayerUI.css";
 import Button from "../generic/Button";
 import RewindIcon from "../../resources/icons/rewind.svg";
 import ForwardIcon from "../../resources/icons/forward.svg";
 import PlayIcon from "../../resources/icons/play.svg";
 import PauseIcon from "../../resources/icons/pause.svg";
+import { MouseEventHandler } from "react";
 
-const Player = ({
+const PlayerUI = ({
   episodeImageUrl,
   episodeTitle,
   currentTime,
   episodeDuration,
   isPlaying,
+  setIsPlaying,
+  rewind,
+  fastForward,
 }: {
   episodeImageUrl: string;
   episodeTitle: string;
   currentTime: string;
   episodeDuration: string;
   isPlaying: boolean;
+  setIsPlaying: Function;
+  rewind: MouseEventHandler;
+  fastForward: MouseEventHandler;
 }) => {
   return (
     <div className={box}>
@@ -42,18 +49,12 @@ const Player = ({
             {currentTime} / {episodeDuration}
           </div>
           <div className={buttons}>
-            <Button
-              icon={<RewindIcon />}
-              onClick={() => console.log("hello")}
-            />
+            <Button icon={<RewindIcon />} onClick={rewind} />
             <Button
               icon={isPlaying ? <PauseIcon /> : <PlayIcon />}
-              onClick={() => console.log("hello")}
+              onClick={() => setIsPlaying(!isPlaying)}
             />
-            <Button
-              icon={<ForwardIcon />}
-              onClick={() => console.log("hello")}
-            />
+            <Button icon={<ForwardIcon />} onClick={fastForward} />
           </div>
         </div>
       </div>
@@ -61,4 +62,4 @@ const Player = ({
   );
 };
 
-export default Player;
+export default PlayerUI;

@@ -1,7 +1,7 @@
 import { box, metadata, episodeQuantity, website } from "./PodcastDetails.css";
 import PodcastDetailsTitle from "./PodcastDetailsTitle";
 import { regular } from "../../styles/fonts.css";
-import { episodeImage } from "../player/Player.css";
+import { episodeImage } from "../player/PlayerUI.css";
 
 const PodcastDetails = ({
   podcastImgUrl,

@@ -3,21 +3,21 @@ import EpisodeListItem from "./EpisodeListItem";
 
 const EpisodeList = ({
   episodes,
-  selectedEpisodeId,
+  selectedEpisodeIndex,
 }: {
   episodes: any;
-  selectedEpisodeId: string;
+  selectedEpisodeIndex: number;
 }) => {
   return (
     <div className={box}>
-      {episodes.map((item: any) => {
+      {episodes.map((item: any, index: number) => {
         return (
           <EpisodeListItem
-            key={item.uuid}
+            key={item.guid}
             episodeTitle={item.title}
             episodeReleaseDate={item.releaseDate}
-            episodeDuration={item.duration}
-            isSelected={item.uuid === selectedEpisodeId}
+            episodeDuration={item.itunes.duration}
+            isSelected={index === selectedEpisodeIndex}
           />
         );
       })}

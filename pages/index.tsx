@@ -1,6 +1,6 @@
 import "../styles/global.css";
 import PodcastList from "../components/podcast-list/PodcastList";
-import Player from "../components/player/Player";
+import Player from "../components/player/PlayerUI";
 import EpisodeListItem from "../components/episode-list/EpisodeListItem";
 import EpisodeList from "../components/episode-list/EpisodeList";
 import PodcastDetails from "../components/podcast-details/PodcastDetails";
