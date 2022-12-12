@@ -1,13 +1,22 @@
 import { box } from "./EpisodeList.css";
 import EpisodeListItem from "./EpisodeListItem";
+import useFetchRSS from "../../hooks/useFetchRSS";
 
 const EpisodeList = ({
-  episodes,
+  rssFeed,
   selectedEpisodeIndex,
 }: {
-  episodes: any;
+  rssFeed: any;
   selectedEpisodeIndex: number;
 }) => {
+  console.log(rssFeed);
+  const { data, error, isLoading } = useFetchRSS(rssFeed);
+  const episodes = data?.items;
+  console.log("data", data);
+
+  if (isLoading) return <p>Loading...</p>;
+  if (!data) return <p>No data</p>;
+
   return (
     <div className={box}>
       {episodes.map((item: any, index: number) => {
@@ -15,7 +24,7 @@ const EpisodeList = ({
           <EpisodeListItem
             key={item.guid}
             episodeTitle={item.title}
-            episodeReleaseDate={item.releaseDate}
+            episodeReleaseDate={item.pubDate}
             episodeDuration={item.itunes.duration}
             isSelected={index === selectedEpisodeIndex}
           />

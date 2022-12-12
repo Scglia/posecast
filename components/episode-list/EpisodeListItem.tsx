@@ -1,3 +1,7 @@
+import {
+  formattedDuration,
+  formattedReleaseDate,
+} from "../../resources/helpers/dateTime";
 import { box, metadata } from "./EpisodeListItem.css";
 import { semiBold } from "../../styles/fonts.css";
 import ClockIcon from "../../resources/icons/clock.svg";
@@ -18,9 +22,9 @@ const EpisodeListItem = ({
       <div className={semiBold}>{episodeTitle}</div>
       <div className={metadata}>
         <ClockIcon />
-        {episodeDuration}
+        {formattedDuration(episodeDuration)}
         <span>·</span>
-        <span>{episodeReleaseDate}</span>
+        <span>{formattedReleaseDate(episodeReleaseDate)}</span>
       </div>
     </div>
   );

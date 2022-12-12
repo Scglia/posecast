@@ -6,7 +6,6 @@ import { podcastDetailsBox, episodesBox } from "../../styles/episodes.css";
 import PlayerWithAudio from "../../components/player/PlayerWithAudio";
 import EpisodeList from "../../components/episode-list/EpisodeList";
 import PodcastDetails from "../../components/podcast-details/PodcastDetails";
-import useFetchRSS from "../../hooks/useFetchRSS";
 import podcastsData from "../../resources/data/podcastsData.json";
 
 export default function Episodes() {
@@ -78,14 +77,7 @@ export default function Episodes() {
 
   if (podcastId === undefined) return <div>Unknown podcast id</div>;
   const selectedPodcast = podcastsData[podcastId];
-  const { data, error, isLoading } = useFetchRSS(selectedPodcast.rssFeed);
-  console.log(data);
-  if (error) return <div>error</div>;
-  if (isLoading !== false || !data)
-    return <div className={regular}>Loading</div>;
 
-  const episodes = data?.items;
-  console.log("episodes", episodes);
   return (
     <>
       <div className={podcastDetailsBox}>
@@ -98,7 +90,10 @@ export default function Episodes() {
         />
       </div>
       <div className={episodesBox}>
-        <EpisodeList episodes={episodes} selectedEpisodeIndex={3} />
+        <EpisodeList
+          rssFeed={selectedPodcast.rssFeed}
+          selectedEpisodeIndex={3}
+        />
       </div>
       <div className={playerBox}>
         <PlayerWithAudio episodeUrl="https://dts.podtrac.com/redirect.mp3/cdn.simplecast.com/audio/c44db111-b60d-436e-ab63-38c7c3402406/episodes/bb31ac83-76b3-454f-9306-6216c88fd2eb/audio/23fa3587-eeac-4a1c-84a4-7e42fa147355/default_tc.mp3?aid=rss_feed&feed=dLRotFGk" />

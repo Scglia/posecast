@@ -5,11 +5,16 @@ export default function useFetchRSS(url) {
   const [error, setError] = useState(null);
   const [isLoading, setLoading] = useState(false);
 
+  console.log("url", url);
   useEffect(() => {
+    console.log("useEffect");
     (async function () {
       try {
         setLoading(true);
-        const response = await fetch(`api/fetch-rss?url=${url}`);
+        // const response = await fetch(`/api/fetch-rss?url=${url}`);
+        const response = await fetch(
+          `/api/fetch-rss?url=http://localhost:3000/mock-rss.xml`
+        );
         const jsonData = await response.json();
         console.log("response", response);
         setData(jsonData);
