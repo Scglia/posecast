@@ -13,7 +13,7 @@ export default function useFetchRSS(url) {
         setLoading(true);
         // const response = await fetch(`/api/fetch-rss?url=${url}`);
         const response = await fetch(
-          `/api/fetch-rss?url=http://localhost:3000/mock-rss.xml`
+          `/api/fetch-rss?url=https://posecast.vercel.com/mock-rss.xml`
         );
         const jsonData = await response.json();
         console.log("response", response);
