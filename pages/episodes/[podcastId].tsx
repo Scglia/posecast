@@ -75,7 +75,7 @@ export default function Episodes() {
 
   const { podcastId } = useRouter().query;
 
-  if (podcastId === undefined) return <div>Unknown podcast id</div>;
+  if (podcastId === undefined) return <div>Unknown podcast index</div>;
   const selectedPodcast = podcastsData[podcastId];
 
   return (

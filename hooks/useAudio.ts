@@ -1,15 +1,14 @@
 import { useState, useEffect } from "react";
 
 function useAudio(audioRef, url) {
-  const [duration, setDuration] = useState();
-  const [currentTime, setCurrentTime] = useState();
+  const [duration, setDuration] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [clickedTime, setClickedTime] = useState();
+  const [clickedTime, setClickedTime] = useState<Number | null>(null);
   const [currentUrl, setCurrentUrl] = useState(null);
 
   useEffect(() => {
     const audio = audioRef.current;
-    console.log({ audioRef });
     if (audioRef.current === undefined) return;
 
     // state setters wrappers

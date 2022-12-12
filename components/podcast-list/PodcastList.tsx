@@ -5,11 +5,11 @@ import PodcastListItem from "./PodcastListItem";
 const PodcastList = ({ podcasts }: { podcasts: any }) => {
   return (
     <div className={box}>
-      {podcasts.map((item: any, index: number) => {
+      {Object.values(podcasts).map((item: any) => {
         return (
           <Link
             key={item.id}
-            href={`/episodes/${index}`}
+            href={`/episodes/${item.id}`}
             style={{ textDecoration: "none" }}
           >
             <PodcastListItem

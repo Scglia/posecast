@@ -26,8 +26,8 @@ const PlayerUI = ({
 }: {
   episodeImageUrl: string;
   episodeTitle: string;
-  currentTime: string;
-  episodeDuration: string;
+  currentTime: number;
+  episodeDuration: number;
   isPlaying: boolean;
   setIsPlaying: Function;
   rewind: MouseEventHandler;

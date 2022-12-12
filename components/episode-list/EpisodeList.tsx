@@ -9,10 +9,8 @@ const EpisodeList = ({
   rssFeed: any;
   selectedEpisodeIndex: number;
 }) => {
-  console.log(rssFeed);
   const { data, error, isLoading } = useFetchRSS(rssFeed);
   const episodes = data?.items;
-  console.log("data", data);
 
   if (isLoading) return <p>Loading...</p>;
   if (!data) return <p>No data</p>;
