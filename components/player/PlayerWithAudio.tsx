@@ -3,7 +3,7 @@ import PlayerUI from "./PlayerUI";
 import useAudio from "../../hooks/useAudio";
 
 const PlayerWithAudio = ({ episodeUrl }: { episodeUrl?: string }) => {
-  const audioRef = useRef();
+  const audioRef = useRef() as React.LegacyRef<HTMLAudioElement>;
   const { currentTime, duration, isPlaying, setIsPlaying, setClickedTime } =
     useAudio(audioRef, episodeUrl);
 
