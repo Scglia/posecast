@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export default function useFetchRSS(url) {
+export default function useFetchRSS(url: any) {
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState(null);
   const [isLoading, setLoading] = useState(false);
@@ -12,7 +12,7 @@ export default function useFetchRSS(url) {
         const response = await fetch(`/api/fetch-rss?url=${url}`);
         const jsonData = await response.json();
         setData(jsonData);
-      } catch (err) {
+      } catch (err: any) {
         setError(err);
       } finally {
         setLoading(false);

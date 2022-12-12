@@ -6,7 +6,7 @@ import { podcastDetailsBox, episodesBox } from "../../styles/episodes.css";
 import PlayerWithAudio from "../../components/player/PlayerWithAudio";
 import EpisodeList from "../../components/episode-list/EpisodeList";
 import PodcastDetails from "../../components/podcast-details/PodcastDetails";
-import podcastsData from "../../resources/data/podcastsData.json";
+import podcastsData from "../../resources/data/podcastsData";
 
 export default function Episodes() {
   // const episodes = [
@@ -76,7 +76,7 @@ export default function Episodes() {
   const { podcastId } = useRouter().query;
 
   if (podcastId === undefined) return <div>Unknown podcast index</div>;
-  const selectedPodcast = podcastsData[podcastId];
+  const selectedPodcast = podcastsData[podcastId as keyof typeof podcastsData];
 
   return (
     <>
@@ -85,7 +85,7 @@ export default function Episodes() {
           podcastImgUrl={selectedPodcast.imageUrl}
           podcastTitle={selectedPodcast.title}
           podcastDescription={selectedPodcast.description}
-          podcastEpisodeQuantity={selectedPodcast.episodesQuantity}
+          podcastEpisodeQuantity={0}
           podcastWebsite={selectedPodcast.website}
         />
       </div>

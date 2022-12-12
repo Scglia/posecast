@@ -3,7 +3,7 @@ import { playerBox } from "../styles/global.css";
 import { podcastListBox } from "../styles/podcasts.css";
 import PodcastList from "../components/podcast-list/PodcastList";
 import PlayerWithAudio from "../components/player/PlayerWithAudio";
-import podcastData from "../resources/data/podcastsData.json";
+import podcastData from "../resources/data/podcastsData";
 
 export default function Podcasts() {
   return (

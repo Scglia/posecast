@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-function useAudio(audioRef, url) {
+function useAudio(audioRef: any, url: any) {
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
