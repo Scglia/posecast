@@ -14,8 +14,8 @@ const EpisodeList = ({
   const episodes = data?.items;
 
   if (isLoading) return <p className={regular}>Loading...</p>;
-  if (!data) return <p className={regular}>No data</p>;
   if (error) return <p className={regular}>{error}</p>;
+  if (!data) return <p className={regular}>No data</p>;
 
   return (
     <div className={box}>
