@@ -20,6 +20,7 @@ export default async function handler(
     delete item.author;
     delete item.content;
     delete item["content:encoded"];
+    delete item["content:encodedSnippet"];
     delete item.contentSnippet;
     delete item.creator;
     delete item.link;
@@ -31,9 +32,3 @@ export default async function handler(
 
   return response.status(200).json(feed);
 }
-
-export const config = {
-  api: {
-    responseLimit: false,
-  },
-};
