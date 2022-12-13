@@ -16,7 +16,19 @@ export default async function handler(
   const pageNum = Number(page);
   const parser = new Parser();
   const feed = await parser.parseURL(url.toString());
-  // feed.items = feed.items.splice(pageNum * 200, 200);
+  feed.items.forEach((item) => {
+    delete item.author;
+    delete item.content;
+    delete item["content:encoded"];
+    delete item.contentSnippet;
+    delete item.creator;
+    delete item.link;
+    delete item.itunes.author;
+    delete item.itunes.explicit;
+    delete item.itunes.subtitle;
+    delete item.itunes.summary;
+  });
+
   return response.status(200).json(feed);
 }
 
