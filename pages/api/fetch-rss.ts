@@ -17,3 +17,9 @@ export default async function handler(
   const feed = await parser.parseURL(url.toString());
   return response.status(200).json(feed);
 }
+
+export const config = {
+  api: {
+    responseLimit: false,
+  },
+};
