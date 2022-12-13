@@ -1,4 +1,5 @@
 import { box } from "./EpisodeList.css";
+import { regular } from "../../styles/fonts.css";
 import EpisodeListItem from "./EpisodeListItem";
 import useFetchRSS from "../../hooks/useFetchRSS";
 
@@ -12,8 +13,9 @@ const EpisodeList = ({
   const { data, error, isLoading } = useFetchRSS(rssFeed);
   const episodes = data?.items;
 
-  if (isLoading) return <p>Loading...</p>;
-  if (!data) return <p>No data</p>;
+  if (isLoading) return <p className={regular}>Loading...</p>;
+  if (!data) return <p className={regular}>No data</p>;
+  if (error) return <p className={regular}>{error}</p>;
 
   return (
     <div className={box}>
