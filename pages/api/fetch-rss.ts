@@ -19,3 +19,9 @@ export default async function handler(
   feed.items = feed.items.splice(pageNum * 200, 200);
   return response.status(200).json(feed);
 }
+
+export const config = {
+  api: {
+    responseLimit: false,
+  },
+};
