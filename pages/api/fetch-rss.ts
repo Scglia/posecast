@@ -16,7 +16,7 @@ export default async function handler(
   const pageNum = Number(page);
   const parser = new Parser();
   const feed = await parser.parseURL(url.toString());
-  feed.items = feed.items.splice(pageNum * 200, 200);
+  // feed.items = feed.items.splice(pageNum * 200, 200);
   return response.status(200).json(feed);
 }
 
