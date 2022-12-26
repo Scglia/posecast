@@ -2,6 +2,7 @@ import { box } from "./EpisodeList.css";
 import { regular } from "../../styles/fonts.css";
 import EpisodeListItem from "./EpisodeListItem";
 import useFetchRSS from "../../hooks/useFetchRSS";
+import { usePlayerContext } from "../../contexts/PlayerContext";
 
 const EpisodeList = ({
   rssFeed,
@@ -10,6 +11,7 @@ const EpisodeList = ({
   rssFeed: any;
   selectedEpisodeIndex: number;
 }) => {
+  const [playerData, setPlayerData] = usePlayerContext();
   const { data, error, isLoading } = useFetchRSS(rssFeed);
   const episodes = data?.items;
 
@@ -21,13 +23,23 @@ const EpisodeList = ({
     <div className={box}>
       {episodes.map((item: any, index: number) => {
         return (
-          <EpisodeListItem
+          <div
             key={item.guid}
-            episodeTitle={item.title}
-            episodeReleaseDate={item.pubDate}
-            episodeDuration={item.itunes.duration}
-            isSelected={index === selectedEpisodeIndex}
-          />
+            onClick={() => {
+              setPlayerData({
+                imageUrl: data.image.url,
+                title: item.title,
+                episodeUrl: item.enclosure.url,
+              });
+            }}
+          >
+            <EpisodeListItem
+              episodeTitle={item.title}
+              episodeReleaseDate={item.pubDate}
+              episodeDuration={item.itunes.duration}
+              isSelected={index === selectedEpisodeIndex}
+            />
+          </div>
         );
       })}
     </div>
