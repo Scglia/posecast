@@ -12,11 +12,6 @@ export default function Podcasts() {
       <div className={podcastListBox}>
         <PodcastList podcasts={podcastData} />
       </div>
-      <div className={playerBox}>
-        <PlayerProvider>
-          <PlayerWithAudio />
-        </PlayerProvider>
-      </div>
     </>
   );
 }

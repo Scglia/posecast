@@ -8,6 +8,7 @@ import EpisodeList from "../../components/episode-list/EpisodeList";
 import PodcastDetails from "../../components/podcast-details/PodcastDetails";
 import podcastsData from "../../resources/data/podcastsData";
 import { PlayerProvider } from "../../contexts/PlayerContext";
+import Link from "next/link";
 
 export default function Episodes() {
   // const episodes = [
@@ -82,6 +83,7 @@ export default function Episodes() {
   return (
     <>
       <div className={podcastDetailsBox}>
+        <Link href={"/podcasts"}>Back</Link>
         <PodcastDetails
           podcastImgUrl={selectedPodcast.imageUrl}
           podcastTitle={selectedPodcast.title}
@@ -90,17 +92,12 @@ export default function Episodes() {
           podcastWebsite={selectedPodcast.website}
         />
       </div>
-      <PlayerProvider>
-        <div className={episodesBox}>
-          <EpisodeList
-            rssFeed={selectedPodcast.rssFeed}
-            selectedEpisodeIndex={3}
-          />
-        </div>
-        <div className={playerBox}>
-          <PlayerWithAudio />
-        </div>
-      </PlayerProvider>
+      <div className={episodesBox}>
+        <EpisodeList
+          rssFeed={selectedPodcast.rssFeed}
+          selectedEpisodeIndex={3}
+        />
+      </div>
     </>
   );
 }
