@@ -1,14 +1,11 @@
 import { useRouter } from "next/router";
 import "../../styles/global.css";
-import { playerBox } from "../../styles/global.css";
-import { regular } from "../../styles/fonts.css";
+import { backButton } from "../../styles/global.css";
 import { podcastDetailsBox, episodesBox } from "../../styles/episodes.css";
-import PlayerWithAudio from "../../components/player/PlayerWithAudio";
 import EpisodeList from "../../components/episode-list/EpisodeList";
 import PodcastDetails from "../../components/podcast-details/PodcastDetails";
 import podcastsData from "../../resources/data/podcastsData";
-import { PlayerProvider } from "../../contexts/PlayerContext";
-import Link from "next/link";
+import Button from "../../components/generic/Button";
 
 export default function Episodes() {
   // const episodes = [
@@ -83,7 +80,11 @@ export default function Episodes() {
   return (
     <>
       <div className={podcastDetailsBox}>
-        <Link href={"/podcasts"}>Back</Link>
+        <div className={backButton}>
+          <Button href={"/podcasts"} type="secondary">
+            Back
+          </Button>
+        </div>
         <PodcastDetails
           podcastImgUrl={selectedPodcast.imageUrl}
           podcastTitle={selectedPodcast.title}

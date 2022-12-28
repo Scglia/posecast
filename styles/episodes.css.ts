@@ -6,7 +6,7 @@ globalStyle("body", {
 });
 
 export const podcastDetailsBox = style({
-  padding: "64px 24px 40px 24px",
+  padding: "24px 24px 40px 24px",
 });
 
 export const episodesBox = style({

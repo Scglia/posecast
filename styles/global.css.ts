@@ -14,3 +14,7 @@ export const playerBox = style({
   background:
     "linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.89) 100%)",
 });
+
+export const backButton = style({
+  paddingBottom: "40px",
+});
