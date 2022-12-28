@@ -7,6 +7,14 @@ export const box = style({
   backgroundColor: "rgb(33, 33, 33)",
   borderRadius: 12,
   padding: 12,
+  transition: "visibility 0s, opacity 0.5s ease-out, transform 0.5s ease-out",
+  transform: "translateY(0)",
+  opacity: "100",
+});
+
+export const hiddenBox = style({
+  transform: "translateY(30%)",
+  opacity: "0",
 });
 
 export const episodeImage = style({

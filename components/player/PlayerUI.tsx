@@ -1,5 +1,6 @@
 import {
   box,
+  hiddenBox,
   episodeImage,
   contentBox,
   title,
@@ -34,7 +35,7 @@ const PlayerUI = ({
   fastForward: MouseEventHandler;
 }) => {
   return (
-    <div className={box}>
+    <div className={episodeTitle ? box : hiddenBox}>
       <img
         className={episodeImage}
         src={episodeImageUrl}
