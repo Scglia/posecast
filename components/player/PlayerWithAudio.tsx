@@ -5,7 +5,6 @@ import { usePlayerContext } from "../../contexts/PlayerContext";
 
 const PlayerWithAudio = () => {
   const [playerData] = usePlayerContext();
-  console.log("render", playerData.episodeUrl);
   const audioRef = useRef() as React.LegacyRef<HTMLAudioElement>;
 
   const { currentTime, duration, isPlaying, setIsPlaying, setClickedTime } =
@@ -16,7 +15,6 @@ const PlayerWithAudio = () => {
   };
 
   const rewind = () => {
-    console.log(currentTime - 10);
     setClickedTime(Math.max(0.1, currentTime - 10)); // Setting starting time at 0 doesn't work (nullish bug in useAudio maybe?)
   };
 
