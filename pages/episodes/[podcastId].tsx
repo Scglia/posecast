@@ -94,10 +94,7 @@ export default function Episodes() {
         />
       </div>
       <div className={episodesBox}>
-        <EpisodeList
-          rssFeed={selectedPodcast.rssFeed}
-          selectedEpisodeIndex={3}
-        />
+        <EpisodeList rssFeed={selectedPodcast.rssFeed} />
       </div>
     </>
   );

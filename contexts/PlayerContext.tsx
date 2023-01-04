@@ -6,6 +6,7 @@ export function PlayerProvider(props: any) {
     imageUrl: "default.jpg",
     title: "",
     episodeUrl: undefined,
+    episodeId: undefined,
   });
   const value = [playerData, setPlayerData];
   return <PlayerContext.Provider value={value} {...props} />;
