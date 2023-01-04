@@ -2,6 +2,7 @@ import { useRef } from "react";
 import PlayerUI from "./PlayerUI";
 import useAudio from "../../hooks/useAudio";
 import { usePlayerContext } from "../../contexts/PlayerContext";
+import { formatTimeFromSeconds } from "../../resources/helpers/dateTime";
 
 const PlayerWithAudio = () => {
   const [playerData] = usePlayerContext();
@@ -27,8 +28,8 @@ const PlayerWithAudio = () => {
         rewind={rewind}
         episodeImageUrl={playerData.imageUrl}
         episodeTitle={playerData.title}
-        currentTime={currentTime}
-        episodeDuration={duration}
+        currentTime={formatTimeFromSeconds(currentTime)}
+        episodeDuration={formatTimeFromSeconds(duration)}
       />
       <audio ref={audioRef}>
         <source src={playerData.episodeUrl} />
