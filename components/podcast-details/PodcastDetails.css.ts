@@ -26,5 +26,6 @@ export const website = style([
     maxWidth: "60%",
     color: "rgb(109, 179, 255)",
     overflow: "hidden",
+    whiteSpace: "nowrap",
   },
 ]);

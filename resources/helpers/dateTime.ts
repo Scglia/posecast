@@ -20,7 +20,12 @@ export const trimLeadingZero = (number: number) => {
 
 // formats hh:mm:ss to hours (optional) and minutes, trim leading 0 from hours
 export const formatDurationFromTime = (time: string) => {
-  const [hours, minutes] = time.split(":");
+  // some podcasts show duration in seconds, convert to hh:mm:ss
+  if (!time.includes(":")) {
+    time = formatTimeFromSeconds(Number(time));
+  }
+
+  const [, minutes = "1", hours = "00"] = time.split(":").reverse();
   return `${
     hours !== "00" ? trimLeadingZero(Number(hours)) + "h" : ""
   }${minutes}min`;
