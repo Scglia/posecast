@@ -14,6 +14,7 @@ import ForwardIcon from "../../resources/icons/forward.svg";
 import PlayIcon from "../../resources/icons/play.svg";
 import PauseIcon from "../../resources/icons/pause.svg";
 import { MouseEventHandler } from "react";
+import { useSwipeable } from "react-swipeable";
 
 const PlayerUI = ({
   episodeImageUrl,
@@ -31,11 +32,20 @@ const PlayerUI = ({
   episodeDuration: string;
   isPlaying: boolean;
   setIsPlaying: Function;
-  rewind: MouseEventHandler;
-  fastForward: MouseEventHandler;
+  rewind: Function;
+  fastForward: Function;
 }) => {
+  const handlers = useSwipeable({
+    onSwipedLeft: () => {
+      rewind();
+    },
+    onSwipedRight: () => {
+      fastForward();
+    },
+  });
+
   return (
-    <div className={episodeTitle ? box : hiddenBox}>
+    <div {...handlers} className={episodeTitle ? box : hiddenBox}>
       <img
         className={episodeImage}
         src={episodeImageUrl}
@@ -50,12 +60,10 @@ const PlayerUI = ({
             {currentTime} / {episodeDuration}
           </div>
           <div className={buttons}>
-            {/* <Button icon={<RewindIcon />} onClick={rewind} /> */}
             <Button
               icon={isPlaying ? <PauseIcon /> : <PlayIcon />}
               onClick={() => setIsPlaying(!isPlaying)}
             />
-            {/* <Button icon={<ForwardIcon />} onClick={fastForward} /> */}
           </div>
         </div>
       </div>
