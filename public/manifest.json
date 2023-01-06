@@ -21,7 +21,7 @@
   ],
   "theme_color": "#000",
   "background_color": "#000",
-  "start_url": "/",
+  "start_url": "/podcasts",
   "display": "standalone",
   "orientation": "portrait"
 }
