@@ -50,12 +50,12 @@ const PlayerUI = ({
             {currentTime} / {episodeDuration}
           </div>
           <div className={buttons}>
-            <Button icon={<RewindIcon />} onClick={rewind} />
+            {/* <Button icon={<RewindIcon />} onClick={rewind} /> */}
             <Button
               icon={isPlaying ? <PauseIcon /> : <PlayIcon />}
               onClick={() => setIsPlaying(!isPlaying)}
             />
-            <Button icon={<ForwardIcon />} onClick={fastForward} />
+            {/* <Button icon={<ForwardIcon />} onClick={fastForward} /> */}
           </div>
         </div>
       </div>

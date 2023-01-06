@@ -31,12 +31,16 @@ export const contentBox = style({
   alignItems: "center",
   flexWrap: "wrap",
   flexGrow: 1,
+  overflow: "hidden",
 });
 
 export const title = style([
   semiBold,
   {
     width: "100%",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   },
 ]);
 
