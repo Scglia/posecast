@@ -20,13 +20,22 @@ export const trimLeadingZero = (number: number) => {
 
 // formats hh:mm:ss to hours (optional) and minutes, trim leading 0 from hours
 export const formatDurationFromTime = (time: string) => {
+  // if the data is missing
+  if (time === undefined) {
+    time = "00:00";
+  }
+
   // some podcasts show duration in seconds, convert to hh:mm:ss
   if (!time.includes(":")) {
     time = formatTimeFromSeconds(Number(time));
   }
 
-  const [, minutes = "1", hours = "00"] = time.split(":").reverse();
-  return `${
-    hours !== "00" ? trimLeadingZero(Number(hours)) + "h" : ""
-  }${minutes}min`;
+  const [, minutes = 1, hours = 0] = time
+    .split(":")
+    .reverse()
+    .map((amount) => {
+      return Number(amount);
+    });
+
+  return `${hours !== 0 ? trimLeadingZero(hours) + "h" : ""}${minutes}min`;
 };
