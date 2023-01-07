@@ -1,15 +1,19 @@
 import { useRef } from "react";
 import PlayerUI from "./PlayerUI";
 import useAudio from "../../hooks/useAudio";
-import { usePlayerContext } from "../../contexts/PlayerContext";
 import { formatTimeFromSeconds } from "../../resources/helpers/dateTime";
+import usePlayerStore from "../../stores/playerStore";
 
 const PlayerWithAudio = () => {
-  const [playerData] = usePlayerContext();
+  const imageUrl = usePlayerStore((state: any) => state.imageUrl);
+  const title = usePlayerStore((state: any) => state.title);
+  const episodeUrl = usePlayerStore((state: any) => state.episodeUrl);
+  const episodeId = usePlayerStore((state: any) => state.episodeId);
+
   const audioRef = useRef() as React.LegacyRef<HTMLAudioElement>;
 
   const { currentTime, duration, isPlaying, setIsPlaying, setClickedTime } =
-    useAudio(audioRef, playerData.episodeUrl);
+    useAudio(audioRef, episodeUrl);
 
   const fastForward = () => {
     setClickedTime(currentTime + 30);
@@ -26,13 +30,13 @@ const PlayerWithAudio = () => {
         setIsPlaying={setIsPlaying}
         fastForward={fastForward}
         rewind={rewind}
-        episodeImageUrl={playerData.imageUrl}
-        episodeTitle={playerData.title}
+        episodeImageUrl={imageUrl}
+        episodeTitle={title}
         currentTime={formatTimeFromSeconds(currentTime)}
         episodeDuration={formatTimeFromSeconds(duration)}
       />
       <audio ref={audioRef}>
-        <source src={playerData.episodeUrl} />
+        <source src={episodeUrl} />
         Your browser does not support the <code>audio</code> element.
       </audio>
     </>
