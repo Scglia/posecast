@@ -1,4 +1,4 @@
-import PlayerWithAudio from "../../components/player/PlayerWithAudio";
+import DynamicPlayer from "../../components/player/DynamicPlayer";
 import { playerBox } from "../../styles/global.css";
 
 export default function PlayerLayout({ children }: { children: any }) {
@@ -7,7 +7,7 @@ export default function PlayerLayout({ children }: { children: any }) {
       <main>
         {children}
         <div className={playerBox}>
-          <PlayerWithAudio />
+          <DynamicPlayer />
         </div>
       </main>
     </>
