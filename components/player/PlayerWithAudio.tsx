@@ -8,7 +8,6 @@ const PlayerWithAudio = () => {
   const imageUrl = usePlayerStore((state: any) => state.imageUrl);
   const title = usePlayerStore((state: any) => state.title);
   const episodeUrl = usePlayerStore((state: any) => state.episodeUrl);
-  const episodeId = usePlayerStore((state: any) => state.episodeId);
 
   const audioRef = useRef() as React.LegacyRef<HTMLAudioElement>;
 

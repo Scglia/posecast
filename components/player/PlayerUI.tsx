@@ -9,11 +9,8 @@ import {
   bottomLine,
 } from "./PlayerUI.css";
 import Button from "../generic/Button";
-import RewindIcon from "../../resources/icons/rewind.svg";
-import ForwardIcon from "../../resources/icons/forward.svg";
 import PlayIcon from "../../resources/icons/play.svg";
 import PauseIcon from "../../resources/icons/pause.svg";
-import { MouseEventHandler } from "react";
 import { useSwipeable } from "react-swipeable";
 
 const PlayerUI = ({
