@@ -2,7 +2,13 @@ import { style, globalStyle } from "@vanilla-extract/css";
 
 globalStyle("html, body", {
   margin: 0,
-  background: "black",
+  background:
+    "linear-gradient(to bottom, rgba(14,14,14,1) 0%,rgba(22,22,22,1) 32%);",
+  minHeight: "100%",
+});
+
+globalStyle("*", {
+  boxSizing: "border-box",
 });
 
 export const playerBox = style({

@@ -1,15 +1,28 @@
-import { style, globalStyle } from "@vanilla-extract/css";
+import { style } from "@vanilla-extract/css";
 
-globalStyle("body", {
-  background:
-    "linear-gradient(to bottom, rgba(14,14,14,1) 0%,rgba(22,22,22,1) 32%)",
+export const topSectionBox = style({
+  overflow: "scroll",
 });
 
 export const podcastDetailsBox = style({
-  padding: "24px 24px 40px 24px",
+  padding: "24px 24px 24px 24px",
 });
 
 export const episodesBox = style({
   padding: "16px 12px 120px 12px",
-  background: "rgb(0,0,0)",
 });
+
+export const filterBox = style({
+  padding: "16px 24px 24px 24px",
+  position: "relative",
+});
+
+export const stickyFilterBox = style([
+  filterBox,
+  {
+    position: "sticky",
+    top: 0,
+    background:
+      "linear-gradient(to top, rgba(0,0,0,0) 0%,rgba(0,0,0,0.89) 50%)",
+  },
+]);

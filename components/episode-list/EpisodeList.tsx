@@ -4,9 +4,11 @@ import EpisodeListItem from "./EpisodeListItem";
 import useFetchRSS from "../../hooks/useFetchRSS";
 import usePlayerStore from "../../stores/playerStore";
 
-const EpisodeList = ({ rssFeed }: { rssFeed: any }) => {
+const EpisodeList = ({ rssFeed, filter }: { rssFeed: any; filter: string }) => {
   const { data, error, isLoading } = useFetchRSS(rssFeed);
-  const episodes = data?.items;
+  const episodes = data?.items.filter((item: any) => {
+    return item.title.toLowerCase().includes(filter.toLowerCase());
+  });
 
   const setPlayerData = usePlayerStore((state: any) => state.setPlayerData);
   const episodeId = usePlayerStore((state: any) => state.episodeId);
