@@ -9,11 +9,11 @@ export const podcastDetailsBox = style({
 });
 
 export const episodesBox = style({
-  padding: "16px 12px 120px 12px",
+  padding: "0 12px 120px 12px",
 });
 
 export const filterBox = style({
-  padding: "16px 24px 24px 24px",
+  padding: "16px 24px",
   position: "relative",
 });
 
