@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { linkStyle } from "../../styles/global.css";
 import { box } from "./PodcastList.css";
 import PodcastListItem from "./PodcastListItem";
 
@@ -10,7 +11,7 @@ const PodcastList = ({ podcasts }: { podcasts: any }) => {
           <Link
             key={item.id}
             href={`/episodes/${item.id}`}
-            style={{ textDecoration: "none" }}
+            className={linkStyle}
           >
             <PodcastListItem
               podcastImageUrl={item.imageUrl}

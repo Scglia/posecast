@@ -5,6 +5,7 @@ globalStyle("html, body", {
   background:
     "linear-gradient(to bottom, rgba(14,14,14,1) 0%,rgba(22,22,22,1) 32%);",
   minHeight: "100%",
+  color: "white",
 });
 
 globalStyle("*", {
@@ -24,3 +25,5 @@ export const playerBox = style({
 export const backButton = style({
   paddingBottom: "40px",
 });
+
+export const linkStyle = style({ textDecoration: "none", color: "inherit" });
