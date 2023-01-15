@@ -9,4 +9,5 @@ export const box = style({
 export const cover = style({
   borderRadius: 6,
   boxShadow: "0 4px 8px 4px rgba(0, 0, 0, 35%)",
+  flexShrink: 0,
 });
