@@ -1,12 +1,16 @@
 import Link from "next/link";
+import { useEffect } from "react";
+import usePodcastsStore from "../../stores/podcastsStore";
 import { linkStyle } from "../../styles/global.css";
 import { box } from "./PodcastList.css";
 import PodcastListItem from "./PodcastListItem";
 
-const PodcastList = ({ podcasts }: { podcasts: any }) => {
+const PodcastList = () => {
+  const podcasts = usePodcastsStore((state: any) => state.podcasts);
+
   return (
     <div className={box}>
-      {Object.values(podcasts).map((item: any) => {
+      {podcasts.map((item: any) => {
         return (
           <Link
             key={item.id}

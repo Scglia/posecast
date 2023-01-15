@@ -1,13 +1,12 @@
 import "../styles/global.css";
 import { podcastListBox } from "../styles/podcasts.css";
-import PodcastList from "../components/podcast-list/PodcastList";
-import podcastData from "../resources/data/podcastsData";
+import DynamicPodcastList from "../components/podcast-list/DynamicPodcastList";
 
 export default function Podcasts() {
   return (
     <>
       <div className={podcastListBox}>
-        <PodcastList podcasts={podcastData} />
+        <DynamicPodcastList />
       </div>
     </>
   );

@@ -14,13 +14,15 @@ import podcastsData from "../../resources/data/podcastsData";
 import Button from "../../components/generic/Button";
 import TextInput from "../../components/generic/TextInput";
 import { useState } from "react";
+import usePodcastsStore from "../../stores/podcastsStore";
 
 export default function Episodes() {
   const [filter, setFilter] = useState("");
   const { podcastId } = useRouter().query;
 
   if (podcastId === undefined) return <div>Unknown podcast index</div>;
-  const selectedPodcast = podcastsData[podcastId as keyof typeof podcastsData];
+  const getPodcastById = usePodcastsStore((state: any) => state.getPodcastById);
+  const selectedPodcast = getPodcastById(podcastId as string);
 
   return (
     <>
