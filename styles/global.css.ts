@@ -2,6 +2,9 @@ import { style, globalStyle } from "@vanilla-extract/css";
 
 globalStyle("html, body", {
   margin: 0,
+});
+
+globalStyle("html", {
   background:
     "linear-gradient(to bottom, rgba(14,14,14,1) 0%,rgba(22,22,22,1) 32%);",
   minHeight: "100%",
