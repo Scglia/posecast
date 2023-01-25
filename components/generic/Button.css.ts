@@ -25,12 +25,21 @@ export const button = styleVariants({
     box,
     { backgroundColor: "rgb(33, 33, 33)", color: "rgb(186, 186, 186)" },
   ],
+  tertiary: [
+    box,
+    {
+      backgroundColor: "transparent",
+      color: "rgb(186, 186, 186)",
+      textDecoration: "underline",
+    },
+  ],
 });
 
 globalStyle(`${box} svg`, {
   height: "20px",
   width: "20px",
   fill: "rgb(38, 38, 38)",
+  boxShadow: "none",
 });
 
 export const buttonLink = style({

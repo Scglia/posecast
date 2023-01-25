@@ -32,7 +32,6 @@ export default function Button({
   href?: string;
 }) {
   const isIcon = icon !== undefined;
-  const isPrimary = type === "primary";
 
   return (
     <ConditionalLink href={href}>
