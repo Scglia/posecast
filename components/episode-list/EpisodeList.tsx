@@ -5,17 +5,17 @@ import useFetchRSS from "../../hooks/useFetchRSS";
 import usePlayerStore from "../../stores/playerStore";
 
 const EpisodeList = ({ rssFeed, filter }: { rssFeed: any; filter: string }) => {
-  const { data, error, isLoading } = useFetchRSS(rssFeed);
-  const episodes = data?.items.filter((item: any) => {
-    return item.title.toLowerCase().includes(filter.toLowerCase());
-  });
-
+  const { data, isLoading, error } = useFetchRSS(rssFeed);
   const setPlayerData = usePlayerStore((state: any) => state.setPlayerData);
   const episodeId = usePlayerStore((state: any) => state.episodeId);
 
-  if (isLoading) return <p className={regular}>Loading...</p>;
+  if (isLoading) return <p className={regular}>loading...</p>;
   if (error) return <p className={regular}>{error}</p>;
-  if (!data) return <p className={regular}>No data</p>;
+  if (!data) return <p className={regular}>no data</p>;
+
+  const episodes = data.items.filter((item: any) => {
+    return item.title.toLowerCase().includes(filter.toLowerCase());
+  });
 
   return (
     <div className={box}>
