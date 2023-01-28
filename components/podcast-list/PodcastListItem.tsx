@@ -1,13 +1,41 @@
-import { box, image } from "./PodcastListItem.css";
+import classNames from "classnames";
+import {
+  box,
+  selectedBox,
+  image,
+  removeButtonBox,
+} from "./PodcastListItem.css";
 import { semiBold } from "../../styles/fonts.css";
+import Button from "../generic/Button";
+import Trash from "../../resources/icons/trash.svg";
+import { useEffect } from "react";
 
 const PodcastListItem = ({
   podcastTitle,
   podcastImageUrl,
+  isSelected,
+  removePodcast,
 }: {
   podcastTitle: string;
   podcastImageUrl: string;
+  isSelected: boolean;
+  removePodcast: () => void;
 }) => {
+  if (isSelected) {
+    return (
+      <div className={classNames(box, { [selectedBox]: isSelected })}>
+        <div className={removeButtonBox}>
+          <Button onClick={removePodcast} type="error" icon={<Trash />} />
+        </div>
+        <span className={semiBold}>{podcastTitle}</span>
+      </div>
+    );
+  }
+
+  useEffect(() => {
+    document.addEventListener("contextmenu", (event) => event.preventDefault());
+  }, []);
+
   return (
     <div className={box}>
       <img

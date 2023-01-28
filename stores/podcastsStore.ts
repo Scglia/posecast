@@ -20,6 +20,14 @@ const usePodcastsStore = create(
         }));
       },
 
+      removePodcast: (podcastId: string) => {
+        set(() => ({
+          podcasts: get().podcasts.filter(
+            (podcast: any) => podcast.id !== podcastId
+          ),
+        }));
+      },
+
       addPodcastFromRSS: async (rssUrl: string) => {
         set(() => ({
           fetchStatus: "LOADING",
@@ -34,7 +42,6 @@ const usePodcastsStore = create(
           })
           .then(async (response) => {
             const jsonData = await response.json();
-            console.log(jsonData);
             const newPodcast = {
               imageUrl: jsonData.itunes.image,
               title: jsonData.title,

@@ -19,6 +19,7 @@ export const box = style([
     boxShadow: "0 4px 4px 2px rgb(0 0 0 / 35%)",
     textDecoration: "none",
     fontFamily: "inherit",
+    fill: "rgb(38, 38, 38)",
   },
 ]);
 
@@ -37,6 +38,14 @@ export const button = styleVariants({
       backgroundColor: "transparent",
       color: "rgb(186, 186, 186)",
       textDecoration: "underline",
+    },
+  ],
+  error: [
+    box,
+    {
+      backgroundColor: "rgb(170, 56, 56)",
+      color: "white",
+      fill: "unset",
     },
   ],
 });
@@ -67,7 +76,6 @@ export const loadingIcon = style({
 globalStyle(`${box} svg`, {
   height: "20px",
   width: "20px",
-  fill: "rgb(38, 38, 38)",
   boxShadow: "none",
 });
 

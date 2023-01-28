@@ -11,6 +11,14 @@ export const box = style({
   },
 });
 
+export const selectedBox = style({
+  backgroundColor: "rgb(33, 33, 33)",
+});
+
 export const image = style({
   borderRadius: 4,
+});
+
+export const removeButtonBox = style({
+  padding: 6,
 });
