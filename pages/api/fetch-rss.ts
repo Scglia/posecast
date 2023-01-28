@@ -6,14 +6,13 @@ export default async function handler(
   response: NextApiResponse
 ) {
   const {
-    query: { url, page = 0 },
+    query: { url },
   } = request;
 
   if (url === undefined) {
     return response.status(400).end(`Query parameter "url" unspecified`);
   }
 
-  const pageNum = Number(page);
   const parser = new Parser();
   const feed = await parser.parseURL(url.toString());
   feed.items.forEach((item) => {

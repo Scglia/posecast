@@ -1,6 +1,8 @@
 import Link from "next/link";
 import React from "react";
-import { buttonLink, button } from "./Button.css";
+import classNames from "classnames";
+import { buttonLink, button, loading, loadingIcon } from "./Button.css";
+import LoadingIcon from "../../resources/icons/loading.svg";
 
 const ConditionalLink = ({
   href,
@@ -24,20 +26,30 @@ export default function Button({
   onClick = undefined,
   type = "primary",
   href = undefined,
+  status = undefined,
 }: {
   icon?: any;
   children?: React.ReactNode;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   type?: keyof typeof button;
   href?: string;
+  status?: "LOADING";
 }) {
   const isIcon = icon !== undefined;
+  const isDisabled = status === "LOADING";
 
   return (
     <ConditionalLink href={href}>
-      <button onClick={onClick} className={button[type]}>
+      <button disabled={isDisabled} onClick={onClick} className={button[type]}>
         {children ? <div>{children}</div> : null}
         {isIcon ? icon : null}
+        {status === "LOADING" ? (
+          <div className={classNames(button[type], loading)}>
+            <div className={loadingIcon}>
+              <LoadingIcon />
+            </div>
+          </div>
+        ) : null}
       </button>
     </ConditionalLink>
   );

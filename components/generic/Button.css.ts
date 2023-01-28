@@ -1,9 +1,15 @@
-import { style, globalStyle, styleVariants } from "@vanilla-extract/css";
+import {
+  style,
+  globalStyle,
+  styleVariants,
+  keyframes,
+} from "@vanilla-extract/css";
 import { semiBold } from "../../styles/fonts.css";
 
 export const box = style([
   semiBold,
   {
+    position: "relative",
     border: "none",
     borderRadius: "5px",
     display: "inline-flex",
@@ -33,6 +39,29 @@ export const button = styleVariants({
       textDecoration: "underline",
     },
   ],
+});
+
+export const loading = style({
+  display: "flex",
+  position: "absolute",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  alignItems: "center",
+  justifyContent: "center",
+  boxShadow: "none",
+});
+
+const rotate = keyframes({
+  "0%": { transform: "rotate(0deg)" },
+  "100%": { transform: "rotate(360deg)" },
+});
+
+export const loadingIcon = style({
+  animation: `${rotate} 1s infinite linear`,
+  width: "20px",
+  height: "20px",
 });
 
 globalStyle(`${box} svg`, {
