@@ -32,10 +32,6 @@ const PodcastListItem = ({
     );
   }
 
-  useEffect(() => {
-    document.addEventListener("contextmenu", (event) => event.preventDefault());
-  }, []);
-
   return (
     <div className={box}>
       <img

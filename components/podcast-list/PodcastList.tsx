@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { useState } from "react";
-import { useLongPress } from "use-long-press";
+import { useCallback, useState } from "react";
+import useLongPress from "../../hooks/useLongPress";
 import usePodcastsStore from "../../stores/podcastsStore";
 import { linkStyle } from "../../styles/global.css";
 import Loading from "./Loading";
@@ -13,15 +13,36 @@ const PodcastList = () => {
   const removePodcast = usePodcastsStore((state: any) => state.removePodcast);
   const [selectedPodcast, setSelectedPodcast] = useState("");
 
-  const longPress = useLongPress(
-    (event, { context }) => {
+  const selectPodcast = useCallback((event: TouchEvent, context: any) => {
+    console.log("context", context);
+    console.log("event", event);
+    if (event.cancelable) {
       event.preventDefault();
-      event.stopPropagation();
-      setSelectedPodcast(context as string);
-    },
-    { captureEvent: true }
+    }
+    setSelectedPodcast(context as string);
+  }, []);
+
+  const defaultOptions = {
+    shouldPreventDefault: false,
+    delay: 400,
+  };
+
+  const longPressSelectPodcast = useLongPress(
+    selectPodcast,
+    () => {},
+    defaultOptions
   );
 
+  const unselectPodcast = useCallback(() => {
+    console.log("unselectPodcast");
+    setSelectedPodcast("" as string);
+  }, []);
+
+  const longPressUnselectPodcast = useLongPress(
+    unselectPodcast,
+    () => {},
+    defaultOptions
+  );
   return (
     <>
       {fetchStatus === "LOADING" ? <Loading /> : null}
@@ -31,15 +52,16 @@ const PodcastList = () => {
           const isSelected = selectedPodcast === id;
           if (isSelected) {
             return (
-              <PodcastListItem
-                key={`${id}-selected`}
-                podcastImageUrl={imageUrl}
-                podcastTitle={title}
-                isSelected={true}
-                removePodcast={() => {
-                  removePodcast(id);
-                }}
-              />
+              <div key={`${id}-selected`} {...longPressUnselectPodcast()}>
+                <PodcastListItem
+                  podcastImageUrl={imageUrl}
+                  podcastTitle={title}
+                  isSelected={true}
+                  removePodcast={() => {
+                    removePodcast(id);
+                  }}
+                />
+              </div>
             );
           }
 
@@ -48,7 +70,7 @@ const PodcastList = () => {
               key={id}
               href={`/episodes/${id}`}
               className={linkStyle}
-              {...longPress(id)}
+              {...longPressSelectPodcast(id)}
             >
               <PodcastListItem
                 podcastImageUrl={imageUrl}
