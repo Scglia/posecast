@@ -8,6 +8,7 @@ const usePlayerStore = create(
       title: "",
       episodeUrl: undefined,
       episodeId: undefined,
+      currentTime: undefined,
       setPlayerData: (params: {
         imageUrl: string;
         title: string;
@@ -19,6 +20,12 @@ const usePlayerStore = create(
           title: params.title,
           episodeUrl: params.episodeUrl,
           episodeId: params.episodeId,
+          currentTime: undefined,
+        }));
+      },
+      setCurrentTime: (currentTime: number) => {
+        set(() => ({
+          currentTime,
         }));
       },
     }),

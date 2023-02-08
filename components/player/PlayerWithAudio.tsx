@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import PlayerUI from "./PlayerUI";
 import useAudio from "../../hooks/useAudio";
 import { formatTimeFromSeconds } from "../../resources/helpers/dateTime";
@@ -8,11 +8,27 @@ const PlayerWithAudio = () => {
   const imageUrl = usePlayerStore((state: any) => state.imageUrl);
   const title = usePlayerStore((state: any) => state.title);
   const episodeUrl = usePlayerStore((state: any) => state.episodeUrl);
+  const savedCurrentTime = usePlayerStore((state: any) => state.currentTime);
+  const setSavedCurrentTime = usePlayerStore(
+    (state: any) => state.setCurrentTime
+  );
 
   const audioRef = useRef() as React.LegacyRef<HTMLAudioElement>;
 
   const { currentTime, duration, isPlaying, setIsPlaying, setClickedTime } =
     useAudio(audioRef, episodeUrl);
+
+  // Initialize currentTime if one is saved in the store
+  useEffect(() => {
+    if (savedCurrentTime) {
+      setClickedTime(savedCurrentTime);
+    }
+  }, []);
+
+  // Update the saved currentTime in the store
+  useEffect(() => {
+    setSavedCurrentTime(currentTime);
+  }, [currentTime]);
 
   const fastForward = () => {
     setClickedTime(currentTime + 30);
