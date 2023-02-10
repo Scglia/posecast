@@ -13,7 +13,7 @@ const PodcastDetails = ({
   podcastImgUrl: string;
   podcastTitle: string;
   podcastDescription: string;
-  podcastEpisodeQuantity: number;
+  podcastEpisodeQuantity: string;
   podcastWebsite: string;
 }) => {
   return (
@@ -25,7 +25,7 @@ const PodcastDetails = ({
       <div className={regular}>{podcastDescription}</div>
       <div className={metadata}>
         <span className={episodeQuantity}>
-          {podcastEpisodeQuantity} episodes
+          {podcastEpisodeQuantity ? `${podcastEpisodeQuantity} episodes` : null}
         </span>
         <a href={podcastWebsite} className={website}>
           {podcastWebsite}

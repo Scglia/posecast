@@ -19,8 +19,11 @@ import { regular } from "../../styles/fonts.css";
 export default function Episodes() {
   const [filter, setFilter] = useState("");
   const { podcastId } = useRouter().query;
-  const getPodcastById = usePodcastsStore((state: any) => state.getPodcastById);
-  const selectedPodcast = getPodcastById(podcastId as string);
+  const podcasts = usePodcastsStore((state: any) => state.podcasts);
+  const getPodcastById = (podcastsArray: any, id: string) => {
+    return podcastsArray.find((podcastItem: any) => podcastItem.id === id);
+  };
+  const selectedPodcast = getPodcastById(podcasts, podcastId as string);
 
   if (selectedPodcast === undefined) {
     return <UnknownPodcast />;
@@ -39,7 +42,7 @@ export default function Episodes() {
             podcastImgUrl={selectedPodcast.imageUrl}
             podcastTitle={selectedPodcast.title}
             podcastDescription={selectedPodcast.description}
-            podcastEpisodeQuantity={0}
+            podcastEpisodeQuantity={selectedPodcast.episodeQuantity}
             podcastWebsite={selectedPodcast.website}
           />
         </div>
@@ -54,7 +57,11 @@ export default function Episodes() {
         />
       </div>
       <div className={episodesBox}>
-        <EpisodeList rssFeed={selectedPodcast.rssFeed} filter={filter} />
+        <EpisodeList
+          podcastId={podcastId as string}
+          rssFeed={selectedPodcast.rssFeed}
+          filter={filter}
+        />
       </div>
     </>
   );

@@ -14,6 +14,7 @@ const usePodcastsStore = create(
         website: string;
         rssFeed: string;
         id: string;
+        episodeQuantity: undefined;
       }) => {
         set(() => ({
           podcasts: [newPodcast, ...get().podcasts],
@@ -48,6 +49,7 @@ const usePodcastsStore = create(
               description: jsonData.description,
               website: jsonData.link,
               rssFeed: rssUrl,
+              episodeQuantity: `${jsonData.items.length}`,
               id: uuidv4(),
             };
 
@@ -63,9 +65,15 @@ const usePodcastsStore = create(
             console.log(error);
           });
       },
-      getPodcastById: (id: string) => {
+      setEpisodeQuantity: (podcastId: string, episodeQuantity: string) => {
         const podcasts = get().podcasts;
-        return podcasts.find((podcast: any) => podcast.id === id);
+        const podcastIndex = podcasts.findIndex(
+          (podcast: any) => podcast.id === podcastId
+        );
+        podcasts[podcastIndex].episodeQuantity = episodeQuantity;
+        set(() => ({
+          podcasts: [...podcasts],
+        }));
       },
     }),
     { name: "podcasts" }
