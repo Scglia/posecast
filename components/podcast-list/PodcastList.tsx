@@ -14,8 +14,6 @@ const PodcastList = () => {
   const [selectedPodcast, setSelectedPodcast] = useState("");
 
   const selectPodcast = useCallback((event: TouchEvent, context: any) => {
-    console.log("context", context);
-    console.log("event", event);
     if (event.cancelable) {
       event.preventDefault();
     }
@@ -34,7 +32,6 @@ const PodcastList = () => {
   );
 
   const unselectPodcast = useCallback(() => {
-    console.log("unselectPodcast");
     setSelectedPodcast("" as string);
   }, []);
 
