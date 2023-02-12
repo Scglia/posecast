@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import { box } from "./EpisodeList.css";
 import { regular } from "../../styles/fonts.css";
 import EpisodeListItem from "./EpisodeListItem";
