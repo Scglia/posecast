@@ -1,7 +1,7 @@
 import { style } from "@vanilla-extract/css";
 
 export const topSectionBox = style({
-  overflow: "scroll",
+  overflow: "auto",
 });
 
 export const podcastDetailsBox = style({
