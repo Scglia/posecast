@@ -5,6 +5,7 @@ import useFetchRSS from "../../hooks/useFetchRSS";
 import usePlayerStore from "../../stores/playerStore";
 import usePodcastsStore from "../../stores/podcastsStore";
 import { useEffect } from "react";
+import Loading from "./Loading";
 
 const EpisodeList = ({
   podcastId,
@@ -29,7 +30,7 @@ const EpisodeList = ({
     }
   }, [data]);
 
-  if (isLoading) return <p className={regular}>loading...</p>;
+  if (isLoading) return <Loading />;
   if (error) return <p className={regular}>this podcast couldn't be loaded</p>;
   if (!data) return <p className={regular}>no data</p>;
 

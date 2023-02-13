@@ -19,6 +19,6 @@ export const metadata = style([
     alignItems: "center",
     gap: 4,
     color: "rgb(186, 186, 186)",
-    paddingTop: 6,
+    paddingTop: 4,
   },
 ]);

@@ -3,8 +3,9 @@ import { useCallback, useState } from "react";
 import useLongPress from "../../hooks/useLongPress";
 import usePodcastsStore from "../../stores/podcastsStore";
 import { linkStyle } from "../../styles/global.css";
-import Loading from "./Loading";
+import Placeholder from "../generic/Placeholder";
 import { box } from "./PodcastList.css";
+import { box as itemBox } from "./PodcastListItem.css";
 import PodcastListItem from "./PodcastListItem";
 
 const PodcastList = () => {
@@ -42,7 +43,11 @@ const PodcastList = () => {
   );
   return (
     <>
-      {fetchStatus === "LOADING" ? <Loading /> : null}
+      {fetchStatus === "LOADING" ? (
+        <div className={itemBox}>
+          <Placeholder height={48} url="/podcast-list-item-placeholder.svg" />
+        </div>
+      ) : null}
       <div className={box}>
         {podcasts.map((item: any) => {
           const { id, title, imageUrl } = item;

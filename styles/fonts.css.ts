@@ -6,7 +6,7 @@ export const regular = style({
 
 export const semiBold = style({
   fontWeight: 500,
-  lineHeight: "142%",
+  lineHeight: "150%",
   fontSize: "0.875rem",
 });
 
