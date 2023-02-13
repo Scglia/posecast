@@ -32,7 +32,7 @@ const EpisodeList = ({
 
   if (isLoading) return <Loading />;
   if (error) return <p className={regular}>this podcast couldn't be loaded</p>;
-  if (!data) return <p className={regular}>no data</p>;
+  if (!data) return null;
 
   const episodes = data.items.filter((item: any) => {
     return item.title.toLowerCase().includes(filter.toLowerCase());
