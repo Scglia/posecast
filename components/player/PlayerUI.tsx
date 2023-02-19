@@ -11,7 +11,7 @@ import {
 import Button from "../generic/Button";
 import PlayIcon from "../../resources/icons/play.svg";
 import PauseIcon from "../../resources/icons/pause.svg";
-import { useSwipeable } from "react-swipeable";
+import { SwipeCallback, useSwipeable } from "react-swipeable";
 
 const PlayerUI = ({
   episodeImageUrl,
@@ -22,6 +22,8 @@ const PlayerUI = ({
   setIsPlaying,
   rewind,
   fastForward,
+  onSwiping,
+  onSwiped,
 }: {
   episodeImageUrl: string;
   episodeTitle: string;
@@ -31,6 +33,8 @@ const PlayerUI = ({
   setIsPlaying: Function;
   rewind: Function;
   fastForward: Function;
+  onSwiping: SwipeCallback;
+  onSwiped: SwipeCallback;
 }) => {
   const handlers = useSwipeable({
     onSwipedLeft: () => {
@@ -39,6 +43,8 @@ const PlayerUI = ({
     onSwipedRight: () => {
       fastForward();
     },
+    onSwiping: onSwiping,
+    onSwiped: onSwiped,
   });
 
   return (

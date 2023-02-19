@@ -9,7 +9,7 @@ export const box = style({
   padding: 12,
   transition: "visibility 0s, opacity 0.5s ease-out, transform 0.5s ease-out",
   transform: "translateY(0)",
-  opacity: "100",
+  opacity: "1",
 });
 
 export const hiddenBox = style({
