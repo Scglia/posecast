@@ -20,8 +20,7 @@ const PlayerUI = ({
   episodeDuration,
   isPlaying,
   setIsPlaying,
-  rewind,
-  fastForward,
+  onSwipeStart,
   onSwiping,
   onSwiped,
 }: {
@@ -31,20 +30,14 @@ const PlayerUI = ({
   episodeDuration: string;
   isPlaying: boolean;
   setIsPlaying: Function;
-  rewind: Function;
-  fastForward: Function;
+  onSwipeStart: SwipeCallback;
   onSwiping: SwipeCallback;
   onSwiped: SwipeCallback;
 }) => {
   const handlers = useSwipeable({
-    onSwipedLeft: () => {
-      rewind();
-    },
-    onSwipedRight: () => {
-      fastForward();
-    },
     onSwiping: onSwiping,
     onSwiped: onSwiped,
+    onSwipeStart: onSwipeStart,
   });
 
   return (

@@ -1,8 +1,10 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import PlayerUI from "./PlayerUI";
 import useAudio from "../../hooks/useAudio";
 import { formatTimeFromSeconds } from "../../resources/helpers/dateTime";
 import usePlayerStore from "../../stores/playerStore";
+import { semiBold } from "../../styles/fonts.css";
+import clamp from "../../resources/helpers/clamp";
 
 const steps = [
   {
@@ -42,25 +44,20 @@ const steps = [
   },
 ];
 
-const multiplyStep = (step: any, multiplier: number) => {
-  return {
-    swipeDelta: step.swipeDelta,
-    value: step.value * multiplier,
-    text: multiplier === -1 ? `-${step.text}` : step.text,
-  };
-};
+const multiplyStep = (step: any, multiplier: number) => ({
+  swipeDelta: step.swipeDelta,
+  value: step.value * multiplier,
+  text: multiplier === -1 ? `-${step.text}` : `+${step.text}`,
+  multiplier,
+});
 
-// Move it outside of the component
-const getStep = (x: number, direction: "Left" | "Right") => {
-  let multiplier = 1;
-  if (direction === "Left") {
-    multiplier = -1;
-  }
-
+const getStep = (x: number, direction: "Left" | "Right" | "Up" | "Down") => {
+  const multiplier = { Left: -1, Right: 1, Up: 1, Down: -1 };
+  console.log("direction: ", direction);
   const step =
     steps.find((step) => x < step.swipeDelta) ?? steps[steps.length - 1];
 
-  return multiplyStep(step, multiplier);
+  return multiplyStep(step, multiplier[direction]);
 };
 
 const PlayerWithAudio = () => {
@@ -73,6 +70,15 @@ const PlayerWithAudio = () => {
   );
 
   const audioRef = useRef() as React.LegacyRef<HTMLAudioElement>;
+
+  const [isBeingSwiped, setIsBeingSwiped] = useState(false);
+  const [swipeRatio, setSwipeRatio] = useState(0);
+  const [step, setStep] = useState({
+    swipeDelta: 0,
+    value: 0,
+    text: "",
+    multiplier: 1,
+  });
 
   const { currentTime, duration, isPlaying, setIsPlaying, setClickedTime } =
     useAudio(audioRef, episodeUrl);
@@ -89,36 +95,96 @@ const PlayerWithAudio = () => {
     setSavedCurrentTime(currentTime);
   }, [currentTime]);
 
-  // const fastForward = () => {
-  //   setClickedTime(currentTime + 30);
-  // };
-
-  // const rewind = () => {
-  //   setClickedTime(Math.max(0.1, currentTime - 10)); // Setting starting time at 0 doesn't work (nullish bug in useAudio maybe?)
-  // };
-
   // useCallback
+  const onSwipeStart = () => {
+    setIsBeingSwiped(true);
+  };
+
   const onSwiping = (eventData: any) => {
     const ratio = Math.abs(eventData.deltaX / 376);
-
+    setSwipeRatio(ratio);
+    setStep(getStep(ratio, eventData.dir));
     console.log(getStep(ratio, eventData.dir));
   };
 
   const onSwiped = (eventData: any) => {
-    const ratio = Math.abs(eventData.deltaX / 376);
+    setIsBeingSwiped(false);
+    const ratio = Math.abs(eventData.deltaX / 376); // TODO - use viewport width
     const step = getStep(ratio, eventData.dir).value;
-    setClickedTime(currentTime + step);
+    setClickedTime(clamp(currentTime + step, 1, duration));
   };
-
+  console.log(clamp(currentTime + step.value, 0, duration));
   return (
     <>
+      <div
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          backgroundColor: "rgba(0,0,0,0.8)",
+          justifyContent: "center",
+          alignItems: "center",
+          textAlign: "center",
+          display: isBeingSwiped ? "flex" : "none",
+        }}
+      >
+        <div
+          style={{
+            backgroundColor: "rgb(33, 33, 33)",
+            padding: "24px 32px",
+            borderRadius: 12,
+            overflow: "hidden",
+            position: "relative",
+          }}
+        >
+          <div
+            className={semiBold}
+            style={{
+              fontSize: 48,
+              lineHeight: "120%",
+              fontVariantNumeric: "tabular-nums",
+            }}
+          >
+            {step.text}
+          </div>
+          <div
+            className={semiBold}
+            style={{
+              fontSize: 24,
+              lineHeight: "120%",
+              fontVariantNumeric: "tabular-nums",
+            }}
+          >
+            {formatTimeFromSeconds(
+              clamp(currentTime + step.value, 0, duration)
+            )}{" "}
+            / {formatTimeFromSeconds(duration)}
+          </div>
+          <div
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: 8,
+              borderRadius: 4,
+              backgroundColor: "rgb(51, 51, 51)",
+              transform: `translateX(${
+                (step.multiplier * Math.min(swipeRatio, 1) - step.multiplier) *
+                100
+              }%)`,
+            }}
+          ></div>
+        </div>
+      </div>
       <PlayerUI
         isPlaying={isPlaying}
         setIsPlaying={setIsPlaying}
-        fastForward={() => {}}
-        rewind={() => {}}
         onSwiping={onSwiping}
         onSwiped={onSwiped}
+        onSwipeStart={onSwipeStart}
         episodeImageUrl={imageUrl}
         episodeTitle={title}
         currentTime={formatTimeFromSeconds(currentTime)}
