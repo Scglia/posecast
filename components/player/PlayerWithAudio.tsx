@@ -5,6 +5,7 @@ import { formatTimeFromSeconds } from "../../resources/helpers/dateTime";
 import usePlayerStore from "../../stores/playerStore";
 import { semiBold } from "../../styles/fonts.css";
 import clamp from "../../resources/helpers/clamp";
+import useWindowSize from "../../hooks/useWindowSize";
 
 const steps = [
   {
@@ -71,6 +72,7 @@ const PlayerWithAudio = () => {
 
   const audioRef = useRef() as React.LegacyRef<HTMLAudioElement>;
 
+  const { width } = useWindowSize();
   const [isBeingSwiped, setIsBeingSwiped] = useState(false);
   const [swipeRatio, setSwipeRatio] = useState(0);
   const [step, setStep] = useState({
@@ -102,7 +104,7 @@ const PlayerWithAudio = () => {
 
   const onSwiping = (eventData: any) => {
     if (eventData.dir === "Up" || eventData.dir === "Down") return;
-    const ratio = Math.abs(eventData.deltaX / 376);
+    const ratio = Math.abs(eventData.deltaX / ((width ?? 300) * 0.7));
     setSwipeRatio(ratio);
     setStep(getStep(ratio, eventData.dir));
     console.log(getStep(ratio, eventData.dir));
