@@ -101,17 +101,16 @@ const PlayerWithAudio = () => {
   };
 
   const onSwiping = (eventData: any) => {
+    if (eventData.dir === "Up" || eventData.dir === "Down") return;
     const ratio = Math.abs(eventData.deltaX / 376);
     setSwipeRatio(ratio);
     setStep(getStep(ratio, eventData.dir));
     console.log(getStep(ratio, eventData.dir));
   };
 
-  const onSwiped = (eventData: any) => {
+  const onSwiped = () => {
     setIsBeingSwiped(false);
-    const ratio = Math.abs(eventData.deltaX / 376); // TODO - use viewport width
-    const step = getStep(ratio, eventData.dir).value;
-    setClickedTime(clamp(currentTime + step, 1, duration));
+    setClickedTime(clamp(currentTime + step.value, 1, duration));
   };
   console.log(clamp(currentTime + step.value, 0, duration));
   return (
