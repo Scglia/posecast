@@ -6,59 +6,7 @@ import usePlayerStore from "../../stores/playerStore";
 import { semiBold } from "../../styles/fonts.css";
 import clamp from "../../resources/helpers/clamp";
 
-const steps = [
-  {
-    swipeDelta: 0.21,
-    value: 10,
-    text: "10s",
-  },
-  {
-    swipeDelta: 0.35,
-    value: 60,
-    text: "1min",
-  },
-  {
-    swipeDelta: 0.5,
-    value: 300,
-    text: "5min",
-  },
-  {
-    swipeDelta: 0.64,
-    value: 600,
-    text: "10min",
-  },
-  {
-    swipeDelta: 0.78,
-    value: 1800,
-    text: "30min",
-  },
-  {
-    swipeDelta: 0.92,
-    value: 3600,
-    text: "1h",
-  },
-  {
-    swipeDelta: 2,
-    value: 7200,
-    text: "2h",
-  },
-];
-
-const multiplyStep = (step: any, multiplier: number) => ({
-  swipeDelta: step.swipeDelta,
-  value: step.value * multiplier,
-  text: multiplier === -1 ? `-${step.text}` : `+${step.text}`,
-  multiplier,
-});
-
-const getStep = (x: number, direction: "Left" | "Right" | "Up" | "Down") => {
-  const multiplier = { Left: -1, Right: 1, Up: 1, Down: -1 };
-  console.log("direction: ", direction);
-  const step =
-    steps.find((step) => x < step.swipeDelta) ?? steps[steps.length - 1];
-
-  return multiplyStep(step, multiplier[direction]);
-};
+const multiplierConversionTable = { Left: -1, Right: 1, Up: 1, Down: -1 };
 
 const PlayerWithAudio = () => {
   const imageUrl = usePlayerStore((state: any) => state.imageUrl);
@@ -73,12 +21,7 @@ const PlayerWithAudio = () => {
 
   const [isBeingSwiped, setIsBeingSwiped] = useState(false);
   const [swipeRatio, setSwipeRatio] = useState(0);
-  const [step, setStep] = useState({
-    swipeDelta: 0,
-    value: 0,
-    text: "",
-    multiplier: 1,
-  });
+  const [multiplier, setMultiplier] = useState<any>(1);
 
   const { currentTime, duration, isPlaying, setIsPlaying, setClickedTime } =
     useAudio(audioRef, episodeUrl);
@@ -103,17 +46,30 @@ const PlayerWithAudio = () => {
   const onSwiping = (eventData: any) => {
     const ratio = Math.abs(eventData.deltaX / 376);
     setSwipeRatio(ratio);
-    setStep(getStep(ratio, eventData.dir));
-    console.log(getStep(ratio, eventData.dir));
+    setMultiplier(
+      multiplierConversionTable[
+        eventData.dir as keyof typeof multiplierConversionTable
+      ]
+    );
   };
 
   const onSwiped = (eventData: any) => {
     setIsBeingSwiped(false);
     const ratio = Math.abs(eventData.deltaX / 376); // TODO - use viewport width
-    const step = getStep(ratio, eventData.dir).value;
-    setClickedTime(clamp(currentTime + step, 1, duration));
+    setMultiplier(
+      multiplierConversionTable[
+        eventData.dir as keyof typeof multiplierConversionTable
+      ]
+    );
+    setClickedTime(
+      clamp(currentTime + ratio * multiplier * duration, 1, duration)
+    );
   };
-  console.log(clamp(currentTime + step.value, 0, duration));
+
+  console.log(
+    clamp(currentTime + swipeRatio * multiplier * duration, 0, duration)
+  );
+
   return (
     <>
       <div
@@ -142,23 +98,17 @@ const PlayerWithAudio = () => {
           <div
             className={semiBold}
             style={{
-              fontSize: 48,
-              lineHeight: "120%",
-              fontVariantNumeric: "tabular-nums",
-            }}
-          >
-            {step.text}
-          </div>
-          <div
-            className={semiBold}
-            style={{
               fontSize: 24,
               lineHeight: "120%",
               fontVariantNumeric: "tabular-nums",
             }}
           >
             {formatTimeFromSeconds(
-              clamp(currentTime + step.value, 0, duration)
+              clamp(
+                currentTime + swipeRatio * multiplier * duration,
+                1,
+                duration
+              )
             )}{" "}
             / {formatTimeFromSeconds(duration)}
           </div>
@@ -172,7 +122,12 @@ const PlayerWithAudio = () => {
               borderRadius: 4,
               backgroundColor: "rgb(51, 51, 51)",
               transform: `translateX(${
-                (step.multiplier * Math.min(swipeRatio, 1) - step.multiplier) *
+                (Math.min(
+                  currentTime + swipeRatio * multiplier * duration,
+                  duration
+                ) /
+                  duration) *
+                  100 -
                 100
               }%)`,
             }}
