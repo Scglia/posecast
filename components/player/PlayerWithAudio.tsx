@@ -5,8 +5,9 @@ import { formatTimeFromSeconds } from "../../resources/helpers/dateTime";
 import usePlayerStore from "../../stores/playerStore";
 import { semiBold } from "../../styles/fonts.css";
 import clamp from "../../resources/helpers/clamp";
+import useWindowSize from "../../hooks/useWindowSize";
 
-const multiplierConversionTable = { Left: -1, Right: 1, Up: 1, Down: -1 };
+const multiplierConversionTable = { Left: -1, Right: 1 };
 
 const PlayerWithAudio = () => {
   const imageUrl = usePlayerStore((state: any) => state.imageUrl);
@@ -22,6 +23,7 @@ const PlayerWithAudio = () => {
   const [isBeingSwiped, setIsBeingSwiped] = useState(false);
   const [swipeRatio, setSwipeRatio] = useState(0);
   const [multiplier, setMultiplier] = useState<any>(1);
+  const { width } = useWindowSize();
 
   const { currentTime, duration, isPlaying, setIsPlaying, setClickedTime } =
     useAudio(audioRef, episodeUrl);
@@ -41,10 +43,12 @@ const PlayerWithAudio = () => {
   // useCallback
   const onSwipeStart = () => {
     setIsBeingSwiped(true);
+    setIsPlaying(false);
   };
 
   const onSwiping = (eventData: any) => {
-    const ratio = Math.abs(eventData.deltaX / 376);
+    if (eventData.dir == "Up" || eventData.dir == "Down") return;
+    const ratio = Math.abs(eventData.deltaX / ((width ?? 300) * 0.8));
     setSwipeRatio(ratio);
     setMultiplier(
       multiplierConversionTable[
@@ -55,15 +59,14 @@ const PlayerWithAudio = () => {
 
   const onSwiped = (eventData: any) => {
     setIsBeingSwiped(false);
-    const ratio = Math.abs(eventData.deltaX / 376); // TODO - use viewport width
-    setMultiplier(
-      multiplierConversionTable[
-        eventData.dir as keyof typeof multiplierConversionTable
-      ]
-    );
     setClickedTime(
-      clamp(currentTime + ratio * multiplier * duration, 1, duration)
+      clamp(
+        Math.trunc(currentTime + swipeRatio * multiplier * duration),
+        1,
+        duration
+      )
     );
+    setIsPlaying(true);
   };
 
   console.log(
@@ -84,6 +87,7 @@ const PlayerWithAudio = () => {
           alignItems: "center",
           textAlign: "center",
           display: isBeingSwiped ? "flex" : "none",
+          overscrollBehavior: "contain",
         }}
       >
         <div
