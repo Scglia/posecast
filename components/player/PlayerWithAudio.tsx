@@ -26,7 +26,7 @@ const PlayerWithAudio = () => {
   const { width } = useWindowSize();
 
   const { currentTime, duration, isPlaying, setIsPlaying, setClickedTime } =
-    useAudio(audioRef, episodeUrl);
+    useAudio(audioRef, episodeUrl, setSavedCurrentTime);
 
   // Initialize currentTime if one is saved in the store
   useEffect(() => {
@@ -34,11 +34,6 @@ const PlayerWithAudio = () => {
       setClickedTime(savedCurrentTime);
     }
   }, []);
-
-  // Update the saved currentTime in the store
-  useEffect(() => {
-    setSavedCurrentTime(currentTime);
-  }, [currentTime]);
 
   // useCallback
   const onSwipeStart = () => {
@@ -68,10 +63,6 @@ const PlayerWithAudio = () => {
     );
     setIsPlaying(true);
   };
-
-  console.log(
-    clamp(currentTime + swipeRatio * multiplier * duration, 0, duration)
-  );
 
   return (
     <>

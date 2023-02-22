@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
-function useAudio(audioRef: any, url: any) {
+function useAudio(audioRef: any, url: any, setSavedCurrentTime: any) {
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -17,7 +17,13 @@ function useAudio(audioRef: any, url: any) {
       setCurrentTime(audio.currentTime);
     };
 
-    const setAudioTime = () => setCurrentTime(Math.trunc(audio.currentTime));
+    const setAudioTime = () => {
+      const time = Math.trunc(audio.currentTime);
+      if (time !== currentTime) {
+        setCurrentTime(time);
+        setSavedCurrentTime(time);
+      }
+    };
 
     // DOM listeners: update React state on DOM events
     audio.addEventListener("loadeddata", setAudioData);
