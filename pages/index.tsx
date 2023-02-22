@@ -22,7 +22,7 @@ export default function Home() {
         flexWrap: "wrap",
       }}
     >
-      <div>
+      <div style={{ width: "100%" }}>
         <span style={{ color: "rgb(186, 186, 186)" }}>Welcome to posecast</span>{" "}
         <br />
         <span className={regular}> Listen to podcasts via RSS</span> <br />
