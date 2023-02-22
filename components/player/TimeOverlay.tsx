@@ -2,7 +2,7 @@ import clamp from "../../resources/helpers/clamp";
 import { formatTimeFromSeconds } from "../../resources/helpers/dateTime";
 import { box, overlay, progressBar, text } from "./TimeOverlay.css";
 
-export default function ({
+export default function TimeOverlay({
   isBeingSwiped,
   swipeRatio,
   multiplier,

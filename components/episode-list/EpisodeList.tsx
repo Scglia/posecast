@@ -28,10 +28,11 @@ const EpisodeList = ({
     if (data !== null) {
       setEpisodeQuantity(podcastId, data.items.length);
     }
-  }, [data]);
+  }, [data, podcastId, setEpisodeQuantity]);
 
   if (isLoading) return <Loading />;
-  if (error) return <p className={regular}>this podcast couldn't be loaded</p>;
+  if (error)
+    return <p className={regular}>this podcast couldn&apos;t be loaded</p>;
   if (!data) return null;
 
   const episodes = data.items.filter((item: any) => {

@@ -3,7 +3,6 @@ import PlayerUI from "./PlayerUI";
 import useAudio from "../../hooks/useAudio";
 import { formatTimeFromSeconds } from "../../resources/helpers/dateTime";
 import usePlayerStore from "../../stores/playerStore";
-import { semiBold } from "../../styles/fonts.css";
 import clamp from "../../resources/helpers/clamp";
 import useWindowSize from "../../hooks/useWindowSize";
 import TimeOverlay from "./TimeOverlay";
@@ -39,7 +38,7 @@ const PlayerWithAudio = () => {
     if (savedCurrentTime) {
       setClickedTime(savedCurrentTime);
     }
-  }, []);
+  }, [savedCurrentTime, setClickedTime]);
 
   const onSwipeStart = useCallback(() => {
     setIsBeingSwiped(true);
@@ -57,7 +56,7 @@ const PlayerWithAudio = () => {
         ]
       );
     },
-    [width, multiplierConversionTable, setSwipeRatio, setMultiplier]
+    [width, setSwipeRatio, setMultiplier]
   );
 
   const onSwiped = useCallback(() => {

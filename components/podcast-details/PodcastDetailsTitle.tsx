@@ -1,6 +1,7 @@
 import { box, cover } from "./PodcastDetailsTitle.css";
 import { title } from "../../styles/fonts.css";
 
+/* eslint-disable @next/next/no-img-element */
 const PodcastDetailsTitle = ({
   podcastImgUrl,
   podcastTitle,

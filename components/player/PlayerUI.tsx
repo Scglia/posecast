@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+import { SwipeCallback, useSwipeable } from "react-swipeable";
 import {
   box,
   hiddenBox,
@@ -11,7 +13,6 @@ import {
 import Button from "../generic/Button";
 import PlayIcon from "../../resources/icons/play.svg";
 import PauseIcon from "../../resources/icons/pause.svg";
-import { SwipeCallback, useSwipeable } from "react-swipeable";
 
 const PlayerUI = ({
   episodeImageUrl,
@@ -41,6 +42,7 @@ const PlayerUI = ({
   });
 
   return (
+    // eslint-disable-next-line @next/next/no-img-element
     <div {...handlers} className={episodeTitle ? box : hiddenBox}>
       <img
         className={episodeImage}

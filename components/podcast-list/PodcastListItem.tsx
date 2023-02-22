@@ -1,15 +1,15 @@
 import classNames from "classnames";
-import {
-  box,
-  selectedBox,
-  image,
-  removeButtonBox,
-} from "./PodcastListItem.css";
+import Trash from "../../resources/icons/trash.svg";
 import { semiBold } from "../../styles/fonts.css";
 import Button from "../generic/Button";
-import Trash from "../../resources/icons/trash.svg";
-import { useEffect } from "react";
+import {
+  box,
+  image,
+  removeButtonBox,
+  selectedBox,
+} from "./PodcastListItem.css";
 
+/* eslint-disable @next/next/no-img-element */
 const PodcastListItem = ({
   podcastTitle,
   podcastImageUrl,

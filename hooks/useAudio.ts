@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 
 function useAudio(audioRef: any, url: any, setSavedCurrentTime: any) {
   const [duration, setDuration] = useState(0);
@@ -49,7 +49,15 @@ function useAudio(audioRef: any, url: any, setSavedCurrentTime: any) {
       audio.removeEventListener("loadeddata", setAudioData);
       audio.removeEventListener("timeupdate", setAudioTime);
     };
-  }, [audioRef, currentTime, clickedTime, isPlaying, url, currentUrl]);
+  }, [
+    audioRef,
+    currentTime,
+    clickedTime,
+    isPlaying,
+    url,
+    currentUrl,
+    setSavedCurrentTime,
+  ]);
 
   return {
     currentTime,
