@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import PlayerUI from "./PlayerUI";
 import useAudio from "../../hooks/useAudio";
 import { formatTimeFromSeconds } from "../../resources/helpers/dateTime";
@@ -8,15 +8,20 @@ import clamp from "../../resources/helpers/clamp";
 import useWindowSize from "../../hooks/useWindowSize";
 
 const multiplierConversionTable = { Left: -1, Right: 1 };
+const selectors = {
+  imageUrl: (state: any) => state.imageUrl,
+  title: (state: any) => state.title,
+  episodeUrl: (state: any) => state.episodeUrl,
+  currentTime: (state: any) => state.currentTime,
+  setCurrentTime: (state: any) => state.setCurrentTime,
+};
 
 const PlayerWithAudio = () => {
-  const imageUrl = usePlayerStore((state: any) => state.imageUrl);
-  const title = usePlayerStore((state: any) => state.title);
-  const episodeUrl = usePlayerStore((state: any) => state.episodeUrl);
-  const savedCurrentTime = usePlayerStore((state: any) => state.currentTime);
-  const setSavedCurrentTime = usePlayerStore(
-    (state: any) => state.setCurrentTime
-  );
+  const imageUrl = usePlayerStore(selectors.imageUrl);
+  const title = usePlayerStore(selectors.title);
+  const episodeUrl = usePlayerStore(selectors.episodeUrl);
+  const savedCurrentTime = usePlayerStore(selectors.currentTime);
+  const setSavedCurrentTime = usePlayerStore(selectors.setCurrentTime);
 
   const audioRef = useRef() as React.LegacyRef<HTMLAudioElement>;
 
@@ -35,24 +40,26 @@ const PlayerWithAudio = () => {
     }
   }, []);
 
-  // useCallback
-  const onSwipeStart = () => {
+  const onSwipeStart = useCallback(() => {
     setIsBeingSwiped(true);
     setIsPlaying(false);
-  };
+  }, [setIsBeingSwiped, setIsPlaying]);
 
-  const onSwiping = (eventData: any) => {
-    if (eventData.dir == "Up" || eventData.dir == "Down") return;
-    const ratio = Math.abs(eventData.deltaX / ((width ?? 300) * 0.8));
-    setSwipeRatio(ratio);
-    setMultiplier(
-      multiplierConversionTable[
-        eventData.dir as keyof typeof multiplierConversionTable
-      ]
-    );
-  };
+  const onSwiping = useCallback(
+    (eventData: any) => {
+      if (eventData.dir == "Up" || eventData.dir == "Down") return;
+      const ratio = Math.abs(eventData.deltaX / ((width ?? 300) * 0.8));
+      setSwipeRatio(ratio);
+      setMultiplier(
+        multiplierConversionTable[
+          eventData.dir as keyof typeof multiplierConversionTable
+        ]
+      );
+    },
+    [width, multiplierConversionTable, setSwipeRatio, setMultiplier]
+  );
 
-  const onSwiped = () => {
+  const onSwiped = useCallback(() => {
     setIsBeingSwiped(false);
     setClickedTime(
       clamp(
@@ -62,7 +69,15 @@ const PlayerWithAudio = () => {
       )
     );
     setIsPlaying(true);
-  };
+  }, [
+    currentTime,
+    swipeRatio,
+    multiplier,
+    duration,
+    setClickedTime,
+    setIsBeingSwiped,
+    setIsPlaying,
+  ]);
 
   return (
     <>
