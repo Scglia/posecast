@@ -2,7 +2,7 @@ _React, Next.js, PWA_
 
 # posecast
 
-An RSS reader for podcast listening  
+An RSS reader for podcast listening designed for mobile use
 https://posecast.vercel.app/
 
 This project is a playground for me to try new features and librairies.
