@@ -6,6 +6,7 @@ import usePlayerStore from "../../stores/playerStore";
 import { semiBold } from "../../styles/fonts.css";
 import clamp from "../../resources/helpers/clamp";
 import useWindowSize from "../../hooks/useWindowSize";
+import TimeOverlay from "./TimeOverlay";
 
 const multiplierConversionTable = { Left: -1, Right: 1 };
 const selectors = {
@@ -81,69 +82,13 @@ const PlayerWithAudio = () => {
 
   return (
     <>
-      <div
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          backgroundColor: "rgba(0,0,0,0.8)",
-          justifyContent: "center",
-          alignItems: "center",
-          textAlign: "center",
-          display: isBeingSwiped ? "flex" : "none",
-          overscrollBehavior: "contain",
-        }}
-      >
-        <div
-          style={{
-            backgroundColor: "rgb(33, 33, 33)",
-            padding: "24px 32px",
-            borderRadius: 12,
-            overflow: "hidden",
-            position: "relative",
-          }}
-        >
-          <div
-            className={semiBold}
-            style={{
-              fontSize: 24,
-              lineHeight: "120%",
-              fontVariantNumeric: "tabular-nums",
-            }}
-          >
-            {formatTimeFromSeconds(
-              clamp(
-                currentTime + swipeRatio * multiplier * duration,
-                1,
-                duration
-              )
-            )}{" "}
-            / {formatTimeFromSeconds(duration)}
-          </div>
-          <div
-            style={{
-              position: "absolute",
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: 8,
-              borderRadius: 4,
-              backgroundColor: "rgb(51, 51, 51)",
-              transform: `translateX(${
-                (Math.min(
-                  currentTime + swipeRatio * multiplier * duration,
-                  duration
-                ) /
-                  duration) *
-                  100 -
-                100
-              }%)`,
-            }}
-          ></div>
-        </div>
-      </div>
+      <TimeOverlay
+        isBeingSwiped={isBeingSwiped}
+        swipeRatio={swipeRatio}
+        multiplier={multiplier}
+        currentTime={currentTime}
+        duration={duration}
+      />
       <PlayerUI
         isPlaying={isPlaying}
         setIsPlaying={setIsPlaying}
