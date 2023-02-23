@@ -8,6 +8,14 @@ import useWindowSize from "../../hooks/useWindowSize";
 import TimeOverlay from "./TimeOverlay";
 
 const multiplierConversionTable = { Left: -1, Right: 1 };
+
+const getRatio = (deltaX: number, width?: number) => {
+  const viewportWidth = width ? width - 48 : 300; // 48 is the width of the player's padding
+
+  // The ratio is squared to make the swipe more precise at the beginning
+  return Math.min(Math.abs(Math.pow(deltaX / viewportWidth, 2)), 1);
+};
+
 const selectors = {
   imageUrl: (state: any) => state.imageUrl,
   title: (state: any) => state.title,
@@ -48,7 +56,7 @@ const PlayerWithAudio = () => {
   const onSwiping = useCallback(
     (eventData: any) => {
       if (eventData.dir == "Up" || eventData.dir == "Down") return;
-      const ratio = Math.abs(eventData.deltaX / ((width ?? 300) * 0.8));
+      const ratio = getRatio(eventData.deltaX, width);
       setSwipeRatio(ratio);
       setMultiplier(
         multiplierConversionTable[
