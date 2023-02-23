@@ -9,10 +9,13 @@ import {
   times,
   buttons,
   bottomLine,
+  loadingStyle,
+  loadingBox,
 } from "./PlayerUI.css";
 import Button from "../generic/Button";
 import PlayIcon from "../../resources/icons/play.svg";
 import PauseIcon from "../../resources/icons/pause.svg";
+import LoadingIcon from "../../resources/icons/loading.svg";
 
 const PlayerUI = ({
   episodeImageUrl,
@@ -21,6 +24,7 @@ const PlayerUI = ({
   episodeDuration,
   isPlaying,
   setIsPlaying,
+  isLoading,
   onSwipeStart,
   onSwiping,
   onSwiped,
@@ -31,6 +35,7 @@ const PlayerUI = ({
   episodeDuration: string;
   isPlaying: boolean;
   setIsPlaying: Function;
+  isLoading: boolean;
   onSwipeStart: SwipeCallback;
   onSwiping: SwipeCallback;
   onSwiped: SwipeCallback;
@@ -44,13 +49,20 @@ const PlayerUI = ({
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <div {...handlers} className={episodeTitle ? box : hiddenBox}>
-      <img
-        className={episodeImage}
-        src={episodeImageUrl}
-        height="72"
-        width="72"
-        alt={`Current episode illustration`}
-      />
+      <div className={episodeImage}>
+        <div
+          className={loadingBox}
+          style={{ display: isLoading ? "flex" : "none" }}
+        >
+          <LoadingIcon className={loadingStyle} />
+        </div>
+        <img
+          src={episodeImageUrl}
+          height="72"
+          width="72"
+          alt={`Current episode illustration`}
+        />
+      </div>
       <div className={contentBox}>
         <div className={title}>{episodeTitle}</div>
         <div className={bottomLine}>

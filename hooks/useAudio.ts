@@ -6,6 +6,7 @@ function useAudio(audioRef: any, url: any, setSavedCurrentTime: any) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [clickedTime, setClickedTime] = useState<Number | null>(null);
   const [currentUrl, setCurrentUrl] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -29,11 +30,21 @@ function useAudio(audioRef: any, url: any, setSavedCurrentTime: any) {
     audio.addEventListener("loadeddata", setAudioData);
     audio.addEventListener("timeupdate", setAudioTime);
 
+    // Loading state
+    audio.addEventListener("loadeddata", () => setIsLoading(false));
+    audio.addEventListener("waiting", () => setIsLoading(true));
+    audio.addEventListener("playing", () => setIsLoading(false));
+    audio.addEventListener("seeking", () => setIsLoading(true));
+    audio.addEventListener("seeked", () => setIsLoading(false));
+
+    // TODO - handle errors
+
     // React state listeners: update DOM on React state changes
     isPlaying ? audio.play() : audio.pause();
 
     // Reload the audio if the URL changes
     if (currentUrl !== url) {
+      setIsLoading(true);
       audio.pause();
       audio.load();
       setCurrentUrl(url);
@@ -65,6 +76,7 @@ function useAudio(audioRef: any, url: any, setSavedCurrentTime: any) {
     isPlaying,
     setIsPlaying,
     setClickedTime,
+    isLoading,
   };
 }
 

@@ -67,7 +67,7 @@ const rotate = keyframes({
   "100%": { transform: "rotate(360deg)" },
 });
 
-export const loadingIcon = style({
+export const loadingStyle = style({
   animation: `${rotate} 1s infinite linear`,
   width: "20px",
   height: "20px",

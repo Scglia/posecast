@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import classNames from "classnames";
-import { buttonLink, button, loading, loadingIcon } from "./Button.css";
+import { buttonLink, button, loading, loadingStyle } from "./Button.css";
 import LoadingIcon from "../../resources/icons/loading.svg";
 
 const ConditionalLink = ({
@@ -45,7 +45,7 @@ export default function Button({
         {isIcon ? icon : null}
         {status === "LOADING" ? (
           <div className={classNames(button[type], loading)}>
-            <div className={loadingIcon}>
+            <div className={loadingStyle}>
               <LoadingIcon />
             </div>
           </div>

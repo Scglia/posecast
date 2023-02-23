@@ -38,8 +38,14 @@ const PlayerWithAudio = () => {
   const [multiplier, setMultiplier] = useState<any>(1);
   const { width } = useWindowSize();
 
-  const { currentTime, duration, isPlaying, setIsPlaying, setClickedTime } =
-    useAudio(audioRef, episodeUrl, setSavedCurrentTime);
+  const {
+    currentTime,
+    duration,
+    isPlaying,
+    setIsPlaying,
+    setClickedTime,
+    isLoading,
+  } = useAudio(audioRef, episodeUrl, setSavedCurrentTime);
 
   // Initialize currentTime if one is saved in the store
   useEffect(() => {
@@ -99,6 +105,7 @@ const PlayerWithAudio = () => {
       <PlayerUI
         isPlaying={isPlaying}
         setIsPlaying={setIsPlaying}
+        isLoading={isLoading}
         onSwiping={onSwiping}
         onSwiped={onSwiped}
         onSwipeStart={onSwipeStart}
