@@ -45,14 +45,7 @@ const PlayerWithAudio = () => {
     setIsPlaying,
     setClickedTime,
     isLoading,
-  } = useAudio(audioRef, episodeUrl, setSavedCurrentTime);
-
-  // Initialize currentTime if one is saved in the store
-  useEffect(() => {
-    if (savedCurrentTime) {
-      setClickedTime(savedCurrentTime);
-    }
-  }, [savedCurrentTime, setClickedTime]);
+  } = useAudio(audioRef, episodeUrl, setSavedCurrentTime, savedCurrentTime);
 
   const onSwipeStart = useCallback(() => {
     setIsBeingSwiped(true);
@@ -82,6 +75,7 @@ const PlayerWithAudio = () => {
         duration
       )
     );
+
     setIsPlaying(true);
   }, [
     currentTime,

@@ -1,13 +1,20 @@
 import { useState, useEffect } from "react";
 
-function useAudio(audioRef: any, url: any, setSavedCurrentTime: any) {
+function useAudio(
+  audioRef: any,
+  url: any,
+  setSavedCurrentTime: any,
+  initialTime: Number
+) {
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [clickedTime, setClickedTime] = useState<Number | null>(null);
   const [currentUrl, setCurrentUrl] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [savedInitialTime, setSavedInitialTime] = useState<Number | null>(
+    initialTime
+  );
   useEffect(() => {
     const audio = audioRef.current;
     if (audioRef.current === undefined) return;
@@ -15,7 +22,7 @@ function useAudio(audioRef: any, url: any, setSavedCurrentTime: any) {
     // state setters wrappers
     const setAudioData = () => {
       setDuration(audio.duration);
-      setCurrentTime(audio.currentTime);
+      setCurrentTime(currentTime ?? 0);
     };
 
     const setAudioTime = () => {
@@ -47,7 +54,15 @@ function useAudio(audioRef: any, url: any, setSavedCurrentTime: any) {
       setIsLoading(true);
       audio.pause();
       audio.load();
+      audio.currentTime = 0;
+      setSavedCurrentTime(0);
       setCurrentUrl(url);
+    }
+
+    // Initialize the current time if one was saved
+    if (savedInitialTime) {
+      setSavedInitialTime(null);
+      audio.currentTime = savedInitialTime;
     }
 
     if (clickedTime && clickedTime !== currentTime) {
@@ -68,6 +83,7 @@ function useAudio(audioRef: any, url: any, setSavedCurrentTime: any) {
     url,
     currentUrl,
     setSavedCurrentTime,
+    savedInitialTime,
   ]);
 
   return {
