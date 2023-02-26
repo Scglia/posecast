@@ -12,23 +12,24 @@ export default function Podcasts() {
   );
   const inputFetchStatus = usePodcastsStore((state: any) => state.fetchStatus);
 
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    addPodcastFromRSS(newRSSFeed);
+    setNewRSSFeed("");
+  }
   return (
     <>
-      <div className={addPodcastBox}>
+      <form className={addPodcastBox} onSubmit={handleSubmit}>
         <InputWithButton
           inputValue={newRSSFeed}
           onChange={(event: React.FormEvent<HTMLInputElement>) => {
             setNewRSSFeed(event.currentTarget.value ?? "");
           }}
           placeholder="rss feed"
-          onClick={() => {
-            addPodcastFromRSS(newRSSFeed);
-            setNewRSSFeed("");
-          }}
           buttonText="add"
           fetchStatus={inputFetchStatus}
         />
-      </div>
+      </form>
       <div className={podcastListBox}>
         <DynamicPodcastList />
       </div>
