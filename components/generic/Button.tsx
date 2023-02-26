@@ -24,27 +24,33 @@ export default function Button({
   icon = undefined,
   children = null,
   onClick = undefined,
-  type = "primary",
+  variant = "primary",
   href = undefined,
   status = undefined,
+  ...args
 }: {
   icon?: any;
   children?: React.ReactNode;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
-  type?: keyof typeof button;
+  variant?: keyof typeof button;
   href?: string;
   status?: "LOADING";
-}) {
+} & React.ButtonHTMLAttributes<HTMLButtonElement>) {
   const isIcon = icon !== undefined;
   const isDisabled = status === "LOADING";
 
   return (
     <ConditionalLink href={href}>
-      <button disabled={isDisabled} onClick={onClick} className={button[type]}>
+      <button
+        disabled={isDisabled}
+        onClick={onClick}
+        className={button[variant]}
+        {...args}
+      >
         {children ? <div>{children}</div> : null}
         {isIcon ? icon : null}
         {status === "LOADING" ? (
-          <div className={classNames(button[type], loading)}>
+          <div className={classNames(button[variant], loading)}>
             <div className={loadingStyle}>
               <LoadingIcon />
             </div>

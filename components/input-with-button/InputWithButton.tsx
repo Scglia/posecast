@@ -12,7 +12,7 @@ export default function InputWithButton({
   inputValue: string;
   onChange: (event: React.FormEvent<HTMLInputElement>) => void;
   placeholder: string;
-  onClick: () => void;
+  onClick?: () => void;
   buttonText: string;
   fetchStatus?: "LOADING" | "SUCCESS" | "ERROR";
 }) {
@@ -25,7 +25,7 @@ export default function InputWithButton({
       />
       <Button
         status={fetchStatus === "LOADING" ? fetchStatus : undefined}
-        type="secondary"
+        variant="secondary"
         onClick={onClick}
       >
         {buttonText}

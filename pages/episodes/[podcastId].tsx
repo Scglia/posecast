@@ -34,7 +34,7 @@ export default function Episodes() {
       <div className={topSectionBox}>
         <div className={podcastDetailsBox}>
           <div className={buttons}>
-            <Button href={"/podcasts"} type="secondary">
+            <Button href={"/podcasts"} variant="secondary">
               back
             </Button>
           </div>
@@ -72,7 +72,7 @@ function UnknownPodcast() {
     <div className={topSectionBox}>
       <div className={podcastDetailsBox}>
         <div className={buttons}>
-          <Button href={"/podcasts"} type="secondary">
+          <Button href={"/podcasts"} variant="secondary">
             back
           </Button>
         </div>

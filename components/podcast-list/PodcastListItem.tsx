@@ -25,7 +25,7 @@ const PodcastListItem = ({
     return (
       <div className={classNames(box, { [selectedBox]: isSelected })}>
         <div className={removeButtonBox}>
-          <Button onClick={removePodcast} type="error" icon={<Trash />} />
+          <Button onClick={removePodcast} variant="error" icon={<Trash />} />
         </div>
         <span className={semiBold}>{podcastTitle}</span>
       </div>
