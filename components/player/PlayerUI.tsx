@@ -44,6 +44,7 @@ const PlayerUI = ({
     onSwiping: onSwiping,
     onSwiped: onSwiped,
     onSwipeStart: onSwipeStart,
+    trackMouse: true,
   });
 
   return (
