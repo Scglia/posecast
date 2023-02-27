@@ -1,6 +1,6 @@
 import "../styles/global.css";
 import Button from "../components/generic/Button";
-import examplePodcasts from "../resources/data/podcastsData";
+import getPodcastsData from "../resources/data/podcastsData";
 import { regular } from "../styles/fonts.css";
 import usePodcastsStore from "../stores/podcastsStore";
 
@@ -8,7 +8,7 @@ export default function Home() {
   const addPodcast = usePodcastsStore((state: any) => state.addPodcast);
 
   const addExemplePodcasts = () => {
-    Object.values(examplePodcasts).forEach((podcast) => {
+    Object.values(getPodcastsData()).forEach((podcast) => {
       addPodcast(podcast);
     });
   };

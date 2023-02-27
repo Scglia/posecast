@@ -1,4 +1,6 @@
-const podcastsData = {
+import { v4 as uuidv4 } from "uuid";
+
+const getPodcastsData = () => ({
   "0": {
     imageUrl:
       "https://image.simplecastcdn.com/images/56e415f0-1911-44b3-9b1c-99551f7146c3/993ebed2-9e1d-4455-8d97-fa64f173572f/3000x3000/1471485006-artwork.jpg?aid=rss_feed",
@@ -7,7 +9,7 @@ const podcastsData = {
       "A weekly conversation about design process and culture. Hosted by Marshall Bock and Brian Lovin.",
     website: "https://designdetails.fm",
     rssFeed: "https://feeds.simplecast.com/eew_vyNL",
-    id: "0",
+    id: uuidv4(),
   },
   "1": {
     imageUrl:
@@ -17,7 +19,7 @@ const podcastsData = {
       "A podcast for developers designed to fit inside your tea break",
     website: "https://www.developertea.com",
     rssFeed: "https://feeds.simplecast.com/dLRotFGk",
-    id: "1",
+    id: uuidv4(),
   },
   "2": {
     imageUrl:
@@ -27,7 +29,7 @@ const podcastsData = {
       "Explore true stories of the dark side of the Internet with host Jack Rhysider as he takes you on a journey through the chilling world of hacking, data breaches, and cyber crime.",
     website: "https://darknetdiaries.com",
     rssFeed: "https://feeds.megaphone.fm/darknetdiaries",
-    id: "2",
+    id: uuidv4(),
   },
   "3": {
     imageUrl:
@@ -38,8 +40,8 @@ const podcastsData = {
     website: "https://www.heavybit.com/library/podcasts/jamstack-radio",
     rssFeed:
       "https://www.heavybit.com/category/library/podcasts/jamstack-radio/feed/feed.rss",
-    id: "3",
+    id: uuidv4(),
   },
-};
+});
 
-export default podcastsData;
+export default getPodcastsData;
