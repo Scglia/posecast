@@ -1,5 +1,5 @@
 import type { AppProps } from "next/app";
-import { Inter } from "@next/font/google";
+import { Inter } from "next/font/google";
 import PlayerLayout from "./app/PlayerLayout";
 
 // If loading a variable font, you don't need to specify the font weight
