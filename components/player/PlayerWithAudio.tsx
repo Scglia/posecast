@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import PlayerUI from "./PlayerUI";
 import useAudio from "../../hooks/useAudio";
 import { formatTimeFromSeconds } from "../../resources/helpers/dateTime";
@@ -31,26 +31,37 @@ const PlayerWithAudio = () => {
   const savedCurrentTime = usePlayerStore(selectors.currentTime);
   const setSavedCurrentTime = usePlayerStore(selectors.setCurrentTime);
 
-  const audioRef = useRef() as React.LegacyRef<HTMLAudioElement>;
-
   const [isBeingSwiped, setIsBeingSwiped] = useState(false);
   const [swipeRatio, setSwipeRatio] = useState(0);
   const [multiplier, setMultiplier] = useState<any>(1);
   const { width } = useWindowSize();
+  const [initialTime] = useState(savedCurrentTime);
+
+  const onTimeUpdate = useCallback(
+    ({ currentTime }: { currentTime: number }) => {
+      setSavedCurrentTime(currentTime);
+    },
+    [setSavedCurrentTime]
+  );
+
+  const onEnded = useCallback(() => {
+    setSavedCurrentTime(0);
+  }, [setSavedCurrentTime]);
 
   const {
     currentTime,
     duration,
     isPlaying,
-    setIsPlaying,
-    setClickedTime,
+    play,
+    pause,
+    setCurrentTime,
     isLoading,
-  } = useAudio(audioRef, episodeUrl, setSavedCurrentTime, savedCurrentTime);
+  } = useAudio(episodeUrl, initialTime, onTimeUpdate, onEnded);
 
   const onSwipeStart = useCallback(() => {
     setIsBeingSwiped(true);
-    setIsPlaying(false);
-  }, [setIsBeingSwiped, setIsPlaying]);
+    pause();
+  }, [setIsBeingSwiped, pause]);
 
   const onSwiping = useCallback(
     (eventData: any) => {
@@ -68,7 +79,7 @@ const PlayerWithAudio = () => {
 
   const onSwiped = useCallback(() => {
     setIsBeingSwiped(false);
-    setClickedTime(
+    setCurrentTime(
       clamp(
         Math.trunc(currentTime + swipeRatio * multiplier * duration),
         1,
@@ -76,15 +87,15 @@ const PlayerWithAudio = () => {
       )
     );
 
-    setIsPlaying(true);
+    play();
   }, [
+    setCurrentTime,
     currentTime,
     swipeRatio,
     multiplier,
     duration,
-    setClickedTime,
+    play,
     setIsBeingSwiped,
-    setIsPlaying,
   ]);
 
   return (
@@ -98,7 +109,8 @@ const PlayerWithAudio = () => {
       />
       <PlayerUI
         isPlaying={isPlaying}
-        setIsPlaying={setIsPlaying}
+        play={play}
+        pause={pause}
         isLoading={isLoading}
         onSwiping={onSwiping}
         onSwiped={onSwiped}
@@ -108,10 +120,6 @@ const PlayerWithAudio = () => {
         currentTime={formatTimeFromSeconds(currentTime)}
         episodeDuration={formatTimeFromSeconds(duration)}
       />
-      <audio ref={audioRef}>
-        <source src={episodeUrl} />
-        Your browser does not support the <code>audio</code> element.
-      </audio>
     </>
   );
 };

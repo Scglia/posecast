@@ -23,7 +23,8 @@ const PlayerUI = ({
   currentTime,
   episodeDuration,
   isPlaying,
-  setIsPlaying,
+  play,
+  pause,
   isLoading,
   onSwipeStart,
   onSwiping,
@@ -34,7 +35,8 @@ const PlayerUI = ({
   currentTime: string;
   episodeDuration: string;
   isPlaying: boolean;
-  setIsPlaying: Function;
+  play: Function;
+  pause: Function;
   isLoading: boolean;
   onSwipeStart: SwipeCallback;
   onSwiping: SwipeCallback;
@@ -73,7 +75,13 @@ const PlayerUI = ({
           <div className={buttons}>
             <Button
               icon={isPlaying ? <PauseIcon /> : <PlayIcon />}
-              onClick={() => setIsPlaying(!isPlaying)}
+              onClick={() => {
+                if (isPlaying) {
+                  pause();
+                } else {
+                  play();
+                }
+              }}
             />
           </div>
         </div>
