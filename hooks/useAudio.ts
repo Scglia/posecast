@@ -46,10 +46,14 @@ const useAudio = (
     dispatch({ type: "SET_IS_PLAYING", payload: false });
   }, []);
 
-  const setCurrentTime = useCallback((timestamp: number) => {
-    audioRef.current.currentTime = timestamp;
-    dispatch({ type: "SET_CURRENT_TIME", payload: timestamp });
-  }, []);
+  const setCurrentTime = useCallback(
+    (timestamp: number) => {
+      audioRef.current.currentTime = timestamp;
+      dispatch({ type: "SET_CURRENT_TIME", payload: timestamp });
+      play();
+    },
+    [play]
+  );
 
   const onLoadedMetadata = useCallback(() => {
     dispatch({ type: "SET_DURATION", payload: audioRef.current.duration });

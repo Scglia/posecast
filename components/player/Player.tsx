@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import PlayerUI from "./PlayerUI";
 import useAudio from "../../hooks/useAudio";
 import { formatTimeFromSeconds } from "../../resources/helpers/dateTime";
