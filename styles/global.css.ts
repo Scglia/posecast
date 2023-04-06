@@ -32,5 +32,3 @@ export const buttons = style({
   width: "100%",
   paddingBottom: "40px",
 });
-
-export const linkStyle = style({ textDecoration: "none", color: "inherit" });

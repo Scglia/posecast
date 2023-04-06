@@ -1,4 +1,5 @@
-import { box, metadata, episodeQuantity, website } from "./PodcastDetails.css";
+import { box, metadata, episodeQuantity } from "./PodcastDetails.css";
+import Link from "../generic/Link";
 import PodcastDetailsTitle from "./PodcastDetailsTitle";
 import { regular } from "../../styles/fonts.css";
 
@@ -28,9 +29,7 @@ const PodcastDetails = ({
         <span className={episodeQuantity}>
           {podcastEpisodeQuantity ? `${podcastEpisodeQuantity} episodes` : null}
         </span>
-        <a href={podcastWebsite} className={website}>
-          {podcastWebsite}
-        </a>
+        <Link href={podcastWebsite}>{podcastWebsite}</Link>
       </div>
     </div>
   );

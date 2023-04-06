@@ -1,8 +1,7 @@
-import Link from "next/link";
+import Link from "../generic/Link";
 import { useCallback, useState } from "react";
 import useLongPress from "../../hooks/useLongPress";
 import usePodcastsStore from "../../stores/podcastsStore";
-import { linkStyle } from "../../styles/global.css";
 import Placeholder from "../generic/Placeholder";
 import { box } from "./PodcastList.css";
 import { box as itemBox } from "./PodcastListItem.css";
@@ -71,7 +70,7 @@ const PodcastList = () => {
             <Link
               key={id}
               href={`/episodes/${id}`}
-              className={linkStyle}
+              variant="noDecoration"
               {...longPressSelectPodcast(id)}
             >
               <PodcastListItem

@@ -11,6 +11,7 @@ import {
 import EpisodeList from "../../components/episode-list/EpisodeList";
 import PodcastDetails from "../../components/podcast-details/PodcastDetails";
 import Button from "../../components/generic/Button";
+import Link from "../../components/generic/Link";
 import TextInput from "../../components/generic/TextInput";
 import { useState } from "react";
 import usePodcastsStore from "../../stores/podcastsStore";
@@ -34,9 +35,9 @@ export default function Episodes() {
       <div className={topSectionBox}>
         <div className={podcastDetailsBox}>
           <div className={buttons}>
-            <Button href={"/podcasts"} variant="secondary">
-              back
-            </Button>
+            <Link href={"/podcasts"} variant="noDecoration">
+              <Button variant="secondary">back</Button>
+            </Link>
           </div>
           <PodcastDetails
             podcastImgUrl={selectedPodcast.imageUrl}
@@ -72,9 +73,9 @@ function UnknownPodcast() {
     <div className={topSectionBox}>
       <div className={podcastDetailsBox}>
         <div className={buttons}>
-          <Button href={"/podcasts"} variant="secondary">
-            back
-          </Button>
+          <Link href={"/podcasts"} variant="noDecoration">
+            <Button variant="secondary">back</Button>
+          </Link>
         </div>
         <div className={regular}>unknown podcast index</div>
       </div>

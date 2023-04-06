@@ -18,14 +18,3 @@ export const episodeQuantity = style([
     color: "rgb(186, 186, 186)",
   },
 ]);
-
-export const website = style([
-  regular,
-  {
-    textOverflow: "ellipsis",
-    maxWidth: "60%",
-    color: "rgb(109, 179, 255)",
-    overflow: "hidden",
-    whiteSpace: "nowrap",
-  },
-]);

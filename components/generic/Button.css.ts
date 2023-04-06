@@ -23,7 +23,7 @@ export const box = style([
   },
 ]);
 
-export const button = styleVariants({
+const buttonVariants = {
   primary: [
     box,
     { backgroundColor: "rgb(255, 255, 255)", color: "rgb(38,38,38)" },
@@ -48,7 +48,11 @@ export const button = styleVariants({
       fill: "unset",
     },
   ],
-});
+};
+
+export type ButtonVariants = keyof typeof buttonVariants;
+
+export const button = styleVariants(buttonVariants);
 
 export const loading = style({
   display: "flex",
@@ -77,8 +81,4 @@ globalStyle(`${box} svg`, {
   height: "20px",
   width: "20px",
   boxShadow: "none",
-});
-
-export const buttonLink = style({
-  textDecoration: "none",
 });

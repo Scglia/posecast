@@ -3,6 +3,7 @@ import Button from "../components/generic/Button";
 import getPodcastsData from "../resources/data/podcastsData";
 import { regular } from "../styles/fonts.css";
 import usePodcastsStore from "../stores/podcastsStore";
+import Link from "../components/generic/Link";
 
 export default function Home() {
   const addPodcast = usePodcastsStore((state: any) => state.addPodcast);
@@ -36,9 +37,11 @@ export default function Home() {
           flexGrow: 1,
         }}
       >
-        <Button href="/podcasts" onClick={addExemplePodcasts}>
-          Open the app with example podcasts
-        </Button>
+        <Link href="/podcasts" variant="noDecoration">
+          <Button onClick={addExemplePodcasts}>
+            Open the app with example podcasts
+          </Button>
+        </Link>
       </div>
     </div>
   );
