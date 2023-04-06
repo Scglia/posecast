@@ -1,14 +1,16 @@
 import { box, cover } from "./PodcastDetailsTitle.css";
 import { title } from "../../styles/fonts.css";
 
+type PodcastDetailsTitleProps = {
+  podcastImgUrl: string;
+  podcastTitle: string;
+};
+
 /* eslint-disable @next/next/no-img-element */
 const PodcastDetailsTitle = ({
   podcastImgUrl,
   podcastTitle,
-}: {
-  podcastImgUrl: string;
-  podcastTitle: string;
-}) => {
+}: PodcastDetailsTitleProps) => {
   return (
     <div className={box}>
       <img

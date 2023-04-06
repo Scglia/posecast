@@ -7,15 +7,13 @@ import usePodcastsStore from "../../stores/podcastsStore";
 import { useEffect } from "react";
 import Loading from "./Loading";
 
-const EpisodeList = ({
-  podcastId,
-  rssFeed,
-  filter,
-}: {
+type EpisodeListProps = {
   podcastId: string;
-  rssFeed: any;
+  rssFeed: string;
   filter: string;
-}) => {
+};
+
+const EpisodeList = ({ podcastId, rssFeed, filter }: EpisodeListProps) => {
   const { data, isLoading, error } = useFetchRSS(rssFeed);
   const setPlayerData = usePlayerStore((state: any) => state.setPlayerData);
   const episodeId = usePlayerStore((state: any) => state.episodeId);

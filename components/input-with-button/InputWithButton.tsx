@@ -1,6 +1,18 @@
 import Button from "../generic/Button";
 import TextInput from "../generic/TextInput";
 
+// Should move to a shared file. //any
+type fetchStatus = "LOADING" | "SUCCESS" | "ERROR";
+
+type InputWithButtonProps = {
+  inputValue: string;
+  onChange: (event: React.FormEvent<HTMLInputElement>) => void;
+  placeholder: string;
+  onClick?: () => void;
+  buttonText: string;
+  fetchStatus?: fetchStatus;
+};
+
 export default function InputWithButton({
   inputValue,
   onChange,
@@ -8,14 +20,7 @@ export default function InputWithButton({
   onClick,
   buttonText,
   fetchStatus,
-}: {
-  inputValue: string;
-  onChange: (event: React.FormEvent<HTMLInputElement>) => void;
-  placeholder: string;
-  onClick?: () => void;
-  buttonText: string;
-  fetchStatus?: "LOADING" | "SUCCESS" | "ERROR";
-}) {
+}: InputWithButtonProps) {
   return (
     <>
       <TextInput

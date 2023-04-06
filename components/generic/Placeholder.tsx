@@ -1,12 +1,11 @@
 import { placeholder } from "./Placeholder.css";
 
-export default function Placeholder({
-  url,
-  height,
-}: {
+type placeholderProps = {
   url: string;
   height: number;
-}) {
+};
+
+export default function Placeholder({ url, height }: placeholderProps) {
   return (
     <div
       className={placeholder}

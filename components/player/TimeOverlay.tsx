@@ -1,15 +1,17 @@
 import { formatTimeFromSeconds } from "../../resources/helpers/dateTime";
 import { box, overlay, progressBar, text } from "./TimeOverlay.css";
 
+type TimeOverlayProps = {
+  isBeingSwiped: boolean;
+  timeOnSwipe: number;
+  duration: number;
+};
+
 export default function TimeOverlay({
   isBeingSwiped,
   timeOnSwipe,
   duration,
-}: {
-  isBeingSwiped: boolean;
-  timeOnSwipe: number;
-  duration: number;
-}) {
+}: TimeOverlayProps) {
   return (
     <div
       className={overlay}

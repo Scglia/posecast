@@ -9,18 +9,20 @@ import {
   selectedBox,
 } from "./PodcastListItem.css";
 
+type PodcastListItemProps = {
+  podcastTitle: string;
+  podcastImageUrl: string;
+  isSelected: boolean;
+  removePodcast: () => void;
+};
+
 /* eslint-disable @next/next/no-img-element */
 const PodcastListItem = ({
   podcastTitle,
   podcastImageUrl,
   isSelected,
   removePodcast,
-}: {
-  podcastTitle: string;
-  podcastImageUrl: string;
-  isSelected: boolean;
-  removePodcast: () => void;
-}) => {
+}: PodcastListItemProps) => {
   if (isSelected) {
     return (
       <div className={classNames(box, { [selectedBox]: isSelected })}>

@@ -17,6 +17,20 @@ import PlayIcon from "../../resources/icons/play.svg";
 import PauseIcon from "../../resources/icons/pause.svg";
 import LoadingIcon from "../../resources/icons/loading.svg";
 
+type PlayerUIProps = {
+  episodeImageUrl: string;
+  episodeTitle: string;
+  currentTime: string;
+  episodeDuration: string;
+  isPlaying: boolean;
+  play: Function;
+  pause: Function;
+  isLoading: boolean;
+  onSwipeStart: SwipeCallback;
+  onSwiping: SwipeCallback;
+  onSwiped: SwipeCallback;
+};
+
 const PlayerUI = ({
   episodeImageUrl,
   episodeTitle,
@@ -29,19 +43,7 @@ const PlayerUI = ({
   onSwipeStart,
   onSwiping,
   onSwiped,
-}: {
-  episodeImageUrl: string;
-  episodeTitle: string;
-  currentTime: string;
-  episodeDuration: string;
-  isPlaying: boolean;
-  play: Function;
-  pause: Function;
-  isLoading: boolean;
-  onSwipeStart: SwipeCallback;
-  onSwiping: SwipeCallback;
-  onSwiped: SwipeCallback;
-}) => {
+}: PlayerUIProps) => {
   const handlers = useSwipeable({
     onSwiping: onSwiping,
     onSwiped: onSwiped,
