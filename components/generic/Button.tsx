@@ -11,6 +11,14 @@ type ButtonProps = {
   status?: "LOADING";
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
+const LoadingOverlay = ({ variant }: { variant: keyof typeof button }) => (
+  <div className={classNames(button[variant], loading)}>
+    <div className={loadingStyle}>
+      <LoadingIcon />
+    </div>
+  </div>
+);
+
 export default function Button({
   icon = undefined,
   children = null,
@@ -31,13 +39,7 @@ export default function Button({
     >
       {children ? <div>{children}</div> : null}
       {isIcon ? icon : null}
-      {status === "LOADING" ? (
-        <div className={classNames(button[variant], loading)}>
-          <div className={loadingStyle}>
-            <LoadingIcon />
-          </div>
-        </div>
-      ) : null}
+      {status === "LOADING" ? <LoadingOverlay variant={variant} /> : null}
     </button>
   );
 }
