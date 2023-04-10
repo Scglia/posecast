@@ -105,6 +105,8 @@ const useAudio = (
     audio.addEventListener("timeupdate", onTimeUpdate);
     audio.addEventListener("ended", onEnded);
     audio.addEventListener("error", onError);
+    audio.addEventListener("play", play);
+    audio.addEventListener("pause", pause);
 
     // Loading state
     audio.addEventListener("loadeddata", notLoading);
@@ -124,11 +126,14 @@ const useAudio = (
       audio.removeEventListener("playing", notLoading);
       audio.removeEventListener("seeking", itsLoading);
       audio.removeEventListener("seeked", notLoading);
+      audio.removeEventListener("play", play);
+      audio.removeEventListener("pause", pause);
     };
   }, [
     url,
     initialTimestamp,
     play,
+    pause,
     onTimeUpdateCallback,
     onEndedCallback,
     onError,
