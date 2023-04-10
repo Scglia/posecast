@@ -57,6 +57,13 @@ const useAudio = (
 
   const onLoadedMetadata = useCallback(() => {
     dispatch({ type: "SET_DURATION", payload: audioRef.current.duration });
+  }, []);
+
+  const itsLoading = useCallback(() => {
+    dispatch({ type: "SET_IS_LOADING", payload: true });
+  }, []);
+
+  const notLoading = useCallback(() => {
     dispatch({ type: "SET_IS_LOADING", payload: false });
   }, []);
 
@@ -99,12 +106,24 @@ const useAudio = (
     audio.addEventListener("ended", onEnded);
     audio.addEventListener("error", onError);
 
+    // Loading state
+    audio.addEventListener("loadeddata", notLoading);
+    audio.addEventListener("waiting", itsLoading);
+    audio.addEventListener("playing", notLoading);
+    audio.addEventListener("seeking", itsLoading);
+    audio.addEventListener("seeked", notLoading);
+
     return () => {
       audio.pause();
       audio.removeEventListener("loadedmetadata", onLoadedMetadata);
       audio.removeEventListener("timeupdate", onTimeUpdate);
       audio.removeEventListener("ended", onEnded);
       audio.removeEventListener("error", onError);
+      audio.removeEventListener("loadeddata", notLoading);
+      audio.removeEventListener("waiting", itsLoading);
+      audio.removeEventListener("playing", notLoading);
+      audio.removeEventListener("seeking", itsLoading);
+      audio.removeEventListener("seeked", notLoading);
     };
   }, [
     url,
@@ -116,6 +135,8 @@ const useAudio = (
     onLoadedMetadata,
     onTimeUpdate,
     onEnded,
+    itsLoading,
+    notLoading,
   ]);
 
   return {
