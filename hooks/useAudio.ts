@@ -109,7 +109,7 @@ const useAudio = (
     audio.addEventListener("pause", pause);
 
     // Loading state
-    audio.addEventListener("loadeddata", notLoading);
+    audio.addEventListener("canplaythrough", notLoading);
     audio.addEventListener("waiting", itsLoading);
     audio.addEventListener("playing", notLoading);
     audio.addEventListener("seeking", itsLoading);
@@ -121,7 +121,7 @@ const useAudio = (
       audio.removeEventListener("timeupdate", onTimeUpdate);
       audio.removeEventListener("ended", onEnded);
       audio.removeEventListener("error", onError);
-      audio.removeEventListener("loadeddata", notLoading);
+      audio.removeEventListener("canplaythrough", notLoading);
       audio.removeEventListener("waiting", itsLoading);
       audio.removeEventListener("playing", notLoading);
       audio.removeEventListener("seeking", itsLoading);
