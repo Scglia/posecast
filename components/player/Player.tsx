@@ -6,6 +6,7 @@ import usePlayerStore from "../../stores/playerStore";
 import clamp from "../../resources/helpers/clamp";
 import useWindowSize from "../../hooks/useWindowSize";
 import TimeOverlay from "./TimeOverlay";
+import Queue from "./Queue";
 
 type Side = "Left" | "Right";
 const multiplierConversionTable = { Left: -1, Right: 1 };
@@ -122,7 +123,9 @@ const PlayerWithAudio = () => {
         episodeTitle={title}
         currentTime={formatTimeFromSeconds(currentTime)}
         episodeDuration={formatTimeFromSeconds(duration)}
-      />
+      >
+        <Queue />
+      </PlayerUI>
     </>
   );
 };

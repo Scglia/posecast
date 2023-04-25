@@ -1,6 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 import { SwipeCallback, useSwipeable } from "react-swipeable";
 import {
+  motion,
+  useAnimation,
+  PanInfo,
+  useTransform,
+  useMotionValue,
+} from "framer-motion";
+import {
   box,
   hiddenBox,
   episodeImage,
@@ -11,6 +18,7 @@ import {
   bottomLine,
   loadingStyle,
   loadingBox,
+  controls,
 } from "./PlayerUI.css";
 import Button from "../generic/Button";
 import PlayIcon from "../../resources/icons/play.svg";
@@ -29,6 +37,7 @@ type PlayerUIProps = {
   onSwipeStart: SwipeCallback;
   onSwiping: SwipeCallback;
   onSwiped: SwipeCallback;
+  children?: React.ReactNode;
 };
 
 const PlayerUI = ({
@@ -43,6 +52,7 @@ const PlayerUI = ({
   onSwipeStart,
   onSwiping,
   onSwiped,
+  children,
 }: PlayerUIProps) => {
   const handlers = useSwipeable({
     onSwiping: onSwiping,
@@ -51,44 +61,67 @@ const PlayerUI = ({
     trackMouse: true,
   });
 
+  const animationControls = useAnimation();
+  const panY = useMotionValue(0);
+  const playerHeight = useTransform(panY, [0, -300], [92, 300]);
+
+  const handlePan = (event: any, info: PanInfo) => {
+    console.log(info);
+    panY.set(info.offset.y);
+  };
+
+  const handlePanEnd = (event: any, info: PanInfo) => {
+    console.log("end", info);
+  };
+
   return (
+    // READD {...handlers}
     // eslint-disable-next-line @next/next/no-img-element
-    <div {...handlers} className={episodeTitle ? box : hiddenBox}>
-      <div className={episodeImage}>
-        <div
-          className={loadingBox}
-          style={{ display: isLoading ? "flex" : "none" }}
-        >
-          <LoadingIcon className={loadingStyle} />
-        </div>
-        <img
-          src={episodeImageUrl}
-          height="72"
-          width="72"
-          alt={`Current episode illustration`}
-        />
-      </div>
-      <div className={contentBox}>
-        <div className={title}>{episodeTitle}</div>
-        <div className={bottomLine}>
-          <div className={times}>
-            {currentTime} / {episodeDuration}
+    <motion.div
+      animate={animationControls}
+      onPan={handlePan}
+      onPanEnd={handlePanEnd}
+      className={episodeTitle ? box : hiddenBox}
+      style={{ height: playerHeight }}
+    >
+      <div className={controls}>
+        <div className={episodeImage}>
+          <div
+            className={loadingBox}
+            style={{ display: isLoading ? "flex" : "none" }}
+          >
+            <LoadingIcon className={loadingStyle} />
           </div>
-          <div className={buttons}>
-            <Button
-              icon={isPlaying ? <PauseIcon /> : <PlayIcon />}
-              onClick={() => {
-                if (isPlaying) {
-                  pause();
-                } else {
-                  play();
-                }
-              }}
-            />
+          <img
+            src={episodeImageUrl}
+            height="72"
+            width="72"
+            alt={`Current episode illustration`}
+          />
+        </div>
+        <div className={contentBox}>
+          <div className={title}>{episodeTitle}</div>
+          <div className={bottomLine}>
+            <div className={times}>
+              {currentTime} / {episodeDuration}
+            </div>
+            <div className={buttons}>
+              <Button
+                icon={isPlaying ? <PauseIcon /> : <PlayIcon />}
+                onClick={() => {
+                  if (isPlaying) {
+                    pause();
+                  } else {
+                    play();
+                  }
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      {children}
+    </motion.div>
   );
 };
 
