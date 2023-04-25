@@ -66,28 +66,29 @@ const PlayerUI = ({
 
   const animationControls = useAnimation();
   const panY = useMotionValue(0);
-  const playerHeight = useTransform(panY, [0, -250], [92, 300]);
+  const playerHeight = useTransform(panY, [0, -180], [92, 300]);
 
   const handlePan = (event: any, info: PanInfo) => {
     console.log(info);
     if (isOpen === false) {
       panY.set(info.offset.y);
     } else {
-      panY.set(info.offset.y - 300);
+      panY.set(info.offset.y - 180);
     }
   };
 
+  const PAN_THRESHOLD = 50;
   const handlePanEnd = (event: any, info: PanInfo) => {
     console.log("end", info);
     if (isOpen === false) {
-      if (info.offset.y < -100) {
+      if (info.offset.y < -PAN_THRESHOLD) {
         animationControls.start({ height: 300 });
         setIsOpen(true);
       } else {
         animationControls.start({ height: 92 });
       }
     } else {
-      if (info.offset.y > 100) {
+      if (info.offset.y > PAN_THRESHOLD) {
         animationControls.start({ height: 92 });
         setIsOpen(false);
       } else {
