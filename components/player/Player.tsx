@@ -10,9 +10,11 @@ import Queue from "./Queue";
 
 type Side = "Left" | "Right";
 const multiplierConversionTable = { Left: -1, Right: 1 };
+const PLAYER_PADDING = 48;
+const DEFAULT_VIEWPORT_WIDTH = 300;
 
 const getRatio = (deltaX: number, width?: number) => {
-  const viewportWidth = width ? width - 48 : 300; // 48 is the width of the player's padding
+  const viewportWidth = width ? width - PLAYER_PADDING : DEFAULT_VIEWPORT_WIDTH;
 
   // The ratio is squared to make the swipe more precise at the beginning
   return Math.min(Math.abs(Math.pow(deltaX / viewportWidth, 2)), 1);

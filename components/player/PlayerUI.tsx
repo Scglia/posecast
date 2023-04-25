@@ -24,6 +24,7 @@ import Button from "../generic/Button";
 import PlayIcon from "../../resources/icons/play.svg";
 import PauseIcon from "../../resources/icons/pause.svg";
 import LoadingIcon from "../../resources/icons/loading.svg";
+import { useState } from "react";
 
 type PlayerUIProps = {
   episodeImageUrl: string;
@@ -61,17 +62,38 @@ const PlayerUI = ({
     trackMouse: true,
   });
 
+  const [isOpen, setIsOpen] = useState(false);
+
   const animationControls = useAnimation();
   const panY = useMotionValue(0);
-  const playerHeight = useTransform(panY, [0, -300], [92, 300]);
+  const playerHeight = useTransform(panY, [0, -250], [92, 300]);
 
   const handlePan = (event: any, info: PanInfo) => {
     console.log(info);
-    panY.set(info.offset.y);
+    if (isOpen === false) {
+      panY.set(info.offset.y);
+    } else {
+      panY.set(info.offset.y - 300);
+    }
   };
 
   const handlePanEnd = (event: any, info: PanInfo) => {
     console.log("end", info);
+    if (isOpen === false) {
+      if (info.offset.y < -100) {
+        animationControls.start({ height: 300 });
+        setIsOpen(true);
+      } else {
+        animationControls.start({ height: 92 });
+      }
+    } else {
+      if (info.offset.y > 100) {
+        animationControls.start({ height: 92 });
+        setIsOpen(false);
+      } else {
+        animationControls.start({ height: 300 });
+      }
+    }
   };
 
   return (
