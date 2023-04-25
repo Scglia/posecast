@@ -78,6 +78,7 @@ const PlayerUI = ({
     // READD {...handlers}
     // eslint-disable-next-line @next/next/no-img-element
     <motion.div
+      onPointerDownCapture={(e) => e.preventDefault()}
       animate={animationControls}
       onPan={handlePan}
       onPanEnd={handlePanEnd}

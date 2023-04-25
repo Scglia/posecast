@@ -9,6 +9,7 @@ export const box = style({
   transform: "translateY(0)",
   opacity: "1",
   position: "relative",
+  touchAction: "none",
 });
 
 export const hiddenBox = style({
