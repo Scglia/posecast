@@ -93,3 +93,14 @@ export const buttons = style({
   display: "flex",
   gap: 12,
 });
+
+export const queueBoxRelative = style({
+  position: "relative",
+});
+
+export const queueBox = style({
+  position: "absolute",
+  top: 24,
+  left: 0,
+  right: 0,
+});
