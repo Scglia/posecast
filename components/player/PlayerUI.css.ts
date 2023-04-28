@@ -10,6 +10,7 @@ export const box = style({
   opacity: "1",
   position: "relative",
   touchAction: "none",
+  overflow: "hidden",
 });
 
 export const hiddenBox = style({
@@ -68,9 +69,11 @@ export const title = style([
   semiBold,
   {
     width: "100%",
-    whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
+    display: "-webkit-box",
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: "vertical",
   },
 ]);
 
@@ -82,17 +85,22 @@ export const bottomLine = style({
   gap: 6,
 });
 
-export const times = style([
+export const bottomText = style([
   regular,
   {
     fontVariantNumeric: "tabular-nums",
+    display: "flex",
+    gap: 8,
   },
 ]);
 
-export const buttons = style({
-  display: "flex",
-  gap: 12,
-});
+export const queueCount = style([
+  bottomText,
+  {
+    color: "rgb(186, 186, 186)",
+    gap: 4,
+  },
+]);
 
 export const queueBoxRelative = style({
   position: "relative",

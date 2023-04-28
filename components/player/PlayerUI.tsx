@@ -6,6 +6,7 @@ import {
   PanInfo,
   useTransform,
   useMotionValue,
+  animate,
 } from "framer-motion";
 import {
   box,
@@ -13,20 +14,26 @@ import {
   episodeImage,
   contentBox,
   title,
-  times,
-  buttons,
+  bottomText,
   bottomLine,
   loadingStyle,
   loadingBox,
   controls,
   queueBox,
   queueBoxRelative,
+  queueCount,
 } from "./PlayerUI.css";
-import Button from "../generic/Button";
-import PlayIcon from "../../resources/icons/play.svg";
-import PauseIcon from "../../resources/icons/pause.svg";
+import PlayIcon from "../../resources/icons/play_small.svg";
+import PauseIcon from "../../resources/icons/pause_small.svg";
 import LoadingIcon from "../../resources/icons/loading.svg";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import QueueIcon from "../../resources/icons/queue.svg";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 
 type PlayerUIProps = {
   episodeImageUrl: string;
@@ -75,16 +82,9 @@ const PlayerUI = ({
   const [isOpen, setIsOpen] = useState(false);
   const [initialPlayerHeight, setInitialPlayerHeight] = useState(0);
   const [childrenHeight, setChildrenHeight] = useState(0);
-  const openPlayerHeight = initialPlayerHeight + childrenHeight + 48;
+  const openPlayerHeight = initialPlayerHeight + childrenHeight + 24;
   const playerRef = useRef(null);
   const childrenRef = useRef(null);
-  useEffect(() => {
-    setInitialPlayerHeight(getComponentSize(playerRef.current).height);
-  }, []);
-
-  useLayoutEffect(() => {
-    setChildrenHeight(getComponentSize(childrenRef.current).height);
-  }, [children]);
 
   const animationControls = useAnimation();
   const childAnimationControls = useAnimation();
@@ -105,10 +105,24 @@ const PlayerUI = ({
     [32, 0]
   );
 
-  console.log({ initialPlayerHeight, childrenHeight, openPlayerHeight });
+  useEffect(() => {
+    setInitialPlayerHeight(getComponentSize(playerRef.current).height);
+    getComponentSize(playerRef.current).height;
+  }, []);
+
+  useLayoutEffect(() => {
+    setChildrenHeight(getComponentSize(childrenRef.current).height);
+  }, [children]);
+
+  const handleTap = useCallback(() => {
+    if (isPlaying) {
+      pause();
+    } else {
+      play();
+    }
+  }, [isPlaying, play, pause]);
 
   const handlePan = (event: any, info: PanInfo) => {
-    console.log({ initialPlayerHeight, childrenHeight });
     if (isOpen === false) {
       panY.set(info.offset.y);
     } else {
@@ -117,35 +131,21 @@ const PlayerUI = ({
   };
 
   const PAN_THRESHOLD = 50;
-  const CHILD_STATE = {
-    initial: {
-      opacity: 0,
-      y: 32,
-    },
-    open: {
-      opacity: 1,
-      y: 0,
-    },
-  };
   const handlePanEnd = (event: any, info: PanInfo) => {
     console.log("end", info);
     if (isOpen === false) {
       if (info.offset.y < -PAN_THRESHOLD) {
-        animationControls.start({ height: openPlayerHeight });
-        childAnimationControls.start(CHILD_STATE.open);
+        animate(panY, -openPlayerHeight);
         setIsOpen(true);
       } else {
-        animationControls.start({ height: initialPlayerHeight });
-        childAnimationControls.start(CHILD_STATE.initial);
+        animate(panY, 0);
       }
     } else {
       if (info.offset.y > PAN_THRESHOLD) {
-        animationControls.start({ height: initialPlayerHeight });
-        childAnimationControls.start(CHILD_STATE.initial);
+        animate(panY, 0);
         setIsOpen(false);
       } else {
-        animationControls.start({ height: openPlayerHeight });
-        childAnimationControls.start(CHILD_STATE.open);
+        animate(panY, -openPlayerHeight);
       }
     }
   };
@@ -161,7 +161,7 @@ const PlayerUI = ({
       className={episodeTitle ? box : hiddenBox}
       style={{ height: playerHeight.get() > 24 ? playerHeight : "auto" }}
     >
-      <div className={controls}>
+      <motion.div className={controls} onTap={handleTap}>
         <div className={episodeImage}>
           <div
             className={loadingBox}
@@ -179,24 +179,21 @@ const PlayerUI = ({
         <div className={contentBox}>
           <div className={title}>{episodeTitle}</div>
           <div className={bottomLine}>
-            <div className={times}>
-              {currentTime} / {episodeDuration}
+            <div className={queueCount}>
+              <QueueIcon />
+              <span>4</span>
             </div>
-            <div className={buttons}>
-              <Button
-                icon={isPlaying ? <PauseIcon /> : <PlayIcon />}
-                onClick={() => {
-                  if (isPlaying) {
-                    pause();
-                  } else {
-                    play();
-                  }
-                }}
-              />
+            <div className={bottomText}>
+              {isPlaying ? <PauseIcon /> : <PlayIcon />}
+              <span>
+                <span>
+                  {currentTime} / {episodeDuration}
+                </span>
+              </span>
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
       <div className={queueBoxRelative}>
         <motion.div
           animate={childAnimationControls}

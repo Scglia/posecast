@@ -1,0 +1,7 @@
+<svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.45 4.13397C8.11667 4.51887 8.11667 5.48112 7.45 5.86603L3.025 8.4208C2.35833 8.80571 1.525 8.32458 1.525 7.55478L1.525 2.44523C1.525 1.67542 2.35833 1.1943 3.025 1.5792L7.45 4.13397Z" fill="#BABABA"/>
+<path d="M10 7H14.5" stroke="#BABABA" stroke-opacity="0.9" stroke-linecap="round"/>
+<path d="M10 3H14.5" stroke="#BABABA" stroke-linecap="round"/>
+<line x1="2.5" y1="10.5" x2="14.5" y2="10.5" stroke="#BABABA" stroke-opacity="0.8" stroke-linecap="round"/>
+<line x1="2.5" y1="14.5" x2="14.5" y2="14.5" stroke="#BABABA" stroke-opacity="0.7" stroke-linecap="round"/>
+</svg>
