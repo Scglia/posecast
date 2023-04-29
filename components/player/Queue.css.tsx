@@ -20,6 +20,7 @@ export const queueItem = style({
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
+  gap: 12,
 });
 
 export const episodeName = style({

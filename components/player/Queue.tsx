@@ -12,7 +12,7 @@ import {
 const Queue = () => {
   return (
     <>
-      <div className={headline}>Next</div>
+      <div className={headline}>next</div>
       <div className={queueBox}>
         <div className={queueItem}>
           <div className={episodeName}>
@@ -25,7 +25,9 @@ const Queue = () => {
         </div>
         <div className={queueItem}>
           <div className={episodeName}>
-            <div className={semiBold}>441: WWDC 2022</div>
+            <div className={semiBold}>
+              456: Should Designers Name Their Layers?
+            </div>
             <div className={podcastName}>Design Details</div>
           </div>
           <div className={reorder}>

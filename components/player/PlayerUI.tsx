@@ -82,7 +82,8 @@ const PlayerUI = ({
   const [isOpen, setIsOpen] = useState(false);
   const [initialPlayerHeight, setInitialPlayerHeight] = useState(0);
   const [childrenHeight, setChildrenHeight] = useState(0);
-  const openPlayerHeight = initialPlayerHeight + childrenHeight + 24;
+  const [isPanning, setIsPanning] = useState(false);
+  const openPlayerHeight = initialPlayerHeight + childrenHeight + 12;
   const playerRef = useRef(null);
   const childrenRef = useRef(null);
 
@@ -115,12 +116,20 @@ const PlayerUI = ({
   }, [children]);
 
   const handleTap = useCallback(() => {
-    if (isPlaying) {
-      pause();
-    } else {
-      play();
+    if (!isPanning) {
+      if (isPlaying) {
+        pause();
+      } else {
+        play();
+      }
     }
-  }, [isPlaying, play, pause]);
+
+    setIsPanning(false);
+  }, [isPlaying, play, pause, isPanning]);
+
+  const handlePanStart = (event: any, info: PanInfo) => {
+    setIsPanning(true);
+  };
 
   const handlePan = (event: any, info: PanInfo) => {
     if (isOpen === false) {
@@ -156,6 +165,7 @@ const PlayerUI = ({
     <motion.div
       ref={playerRef}
       animate={animationControls}
+      onPanStart={handlePanStart}
       onPan={handlePan}
       onPanEnd={handlePanEnd}
       className={episodeTitle ? box : hiddenBox}
@@ -181,7 +191,7 @@ const PlayerUI = ({
           <div className={bottomLine}>
             <div className={queueCount}>
               <QueueIcon />
-              <span>4</span>
+              <span>2</span>
             </div>
             <div className={bottomText}>
               {isPlaying ? <PauseIcon /> : <PlayIcon />}

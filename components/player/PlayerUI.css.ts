@@ -108,7 +108,7 @@ export const queueBoxRelative = style({
 
 export const queueBox = style({
   position: "absolute",
-  top: 24,
+  top: 12,
   left: 0,
   right: 0,
 });
