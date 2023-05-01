@@ -19,21 +19,14 @@ import {
   loadingStyle,
   loadingBox,
   controls,
-  queueBox,
-  queueBoxRelative,
   queueCount,
+  overflowBox,
 } from "./PlayerUI.css";
 import PlayIcon from "../../resources/icons/play_small.svg";
 import PauseIcon from "../../resources/icons/pause_small.svg";
 import LoadingIcon from "../../resources/icons/loading.svg";
 import QueueIcon from "../../resources/icons/queue.svg";
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 type PlayerUIProps = {
   episodeImageUrl: string;
@@ -52,6 +45,7 @@ type PlayerUIProps = {
 
 function getComponentSize(componentRef: any) {
   const rect = componentRef.getBoundingClientRect();
+  console.log(rect);
   return {
     width: rect.width,
     height: rect.height,
@@ -80,20 +74,20 @@ const PlayerUI = ({
   });
 
   const [isOpen, setIsOpen] = useState(false);
-  const [initialPlayerHeight, setInitialPlayerHeight] = useState(0);
+  const [openPlayerHeight, setOpenPlayerHeight] = useState(0);
   const [childrenHeight, setChildrenHeight] = useState(0);
   const [isPanning, setIsPanning] = useState(false);
-  const openPlayerHeight = initialPlayerHeight + childrenHeight + 12;
+  const closedPlayerHeight = openPlayerHeight - childrenHeight;
   const playerRef = useRef(null);
   const childrenRef = useRef(null);
 
   const animationControls = useAnimation();
   const childAnimationControls = useAnimation();
   const panY = useMotionValue(0);
-  const playerHeight = useTransform(
+  const playerOffset = useTransform(
     panY,
     [0, -openPlayerHeight],
-    [initialPlayerHeight, openPlayerHeight]
+    [childrenHeight, 0]
   );
   const childOpacity = useTransform(
     panY,
@@ -107,11 +101,10 @@ const PlayerUI = ({
   );
 
   useEffect(() => {
-    setInitialPlayerHeight(getComponentSize(playerRef.current).height);
-    getComponentSize(playerRef.current).height;
+    setOpenPlayerHeight(getComponentSize(playerRef.current).height);
   }, []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setChildrenHeight(getComponentSize(childrenRef.current).height);
   }, [children]);
 
@@ -144,70 +137,74 @@ const PlayerUI = ({
     console.log("end", info);
     if (isOpen === false) {
       if (info.offset.y < -PAN_THRESHOLD) {
-        animate(panY, -openPlayerHeight);
         setIsOpen(true);
+        animate(panY, -openPlayerHeight);
       } else {
         animate(panY, 0);
       }
     } else {
       if (info.offset.y > PAN_THRESHOLD) {
-        animate(panY, 0);
-        setIsOpen(false);
+        animate(panY, 0).then(() => {
+          setIsOpen(false);
+        });
       } else {
         animate(panY, -openPlayerHeight);
       }
     }
   };
 
+  console.log({ isOpen, isPanning });
+  const overflowBoxHeight =
+    isOpen || isPanning ? openPlayerHeight : closedPlayerHeight;
+
   return (
     // READD {...handlers}
     // eslint-disable-next-line @next/next/no-img-element
-    <motion.div
-      ref={playerRef}
-      animate={animationControls}
-      onPanStart={handlePanStart}
-      onPan={handlePan}
-      onPanEnd={handlePanEnd}
-      className={episodeTitle ? box : hiddenBox}
-      style={{ height: playerHeight.get() > 24 ? playerHeight : "auto" }}
-    >
-      <motion.div className={controls} onTap={handleTap}>
-        <div className={episodeImage}>
-          <div
-            className={loadingBox}
-            style={{ display: isLoading ? "flex" : "none" }}
-          >
-            <LoadingIcon className={loadingStyle} />
-          </div>
-          <img
-            src={episodeImageUrl}
-            height="72"
-            width="72"
-            alt={`Current episode illustration`}
-          />
-        </div>
-        <div className={contentBox}>
-          <div className={title}>{episodeTitle}</div>
-          <div className={bottomLine}>
-            <div className={queueCount}>
-              <QueueIcon />
-              <span>2</span>
+    <div className={overflowBox} style={{ height: overflowBoxHeight }}>
+      <motion.div
+        ref={playerRef}
+        animate={animationControls}
+        onPanStart={handlePanStart}
+        onPan={handlePan}
+        onPanEnd={handlePanEnd}
+        className={episodeTitle ? box : hiddenBox}
+        style={{ y: playerOffset }}
+      >
+        <motion.div className={controls} onTap={handleTap}>
+          <div className={episodeImage}>
+            <div
+              className={loadingBox}
+              style={{ display: isLoading ? "flex" : "none" }}
+            >
+              <LoadingIcon className={loadingStyle} />
             </div>
-            <div className={bottomText}>
-              {isPlaying ? <PauseIcon /> : <PlayIcon />}
-              <span>
+            <img
+              src={episodeImageUrl}
+              height="72"
+              width="72"
+              alt={`Current episode illustration`}
+            />
+          </div>
+          <div className={contentBox}>
+            <div className={title}>{episodeTitle}</div>
+            <div className={bottomLine}>
+              <div className={queueCount}>
+                <QueueIcon />
+                <span>2</span>
+              </div>
+              <div className={bottomText}>
+                {isPlaying ? <PauseIcon /> : <PlayIcon />}
                 <span>
-                  {currentTime} / {episodeDuration}
+                  <span>
+                    {currentTime} / {episodeDuration}
+                  </span>
                 </span>
-              </span>
+              </div>
             </div>
           </div>
-        </div>
-      </motion.div>
-      <div className={queueBoxRelative}>
+        </motion.div>
         <motion.div
           animate={childAnimationControls}
-          className={queueBox}
           ref={childrenRef}
           style={{
             opacity: childOpacity,
@@ -216,8 +213,8 @@ const PlayerUI = ({
         >
           {children}
         </motion.div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </div>
   );
 };
 

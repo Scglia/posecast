@@ -5,6 +5,7 @@ export const headline = style([
   semiBold,
   {
     color: "rgb(186, 186, 186)",
+    paddingTop: 12,
   },
 ]);
 
