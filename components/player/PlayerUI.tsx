@@ -109,7 +109,7 @@ const PlayerUI = ({
 
   useEffect(() => {
     setOpenPlayerHeight(getComponentSize(playerRef.current).height);
-  }, []);
+  }, [episodeTitle]);
 
   useEffect(() => {
     setChildrenHeight(getComponentSize(childrenRef.current).height);
