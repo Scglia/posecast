@@ -9,6 +9,7 @@ export const box = style({
   opacity: "1",
   touchAction: "none",
   overflow: "hidden",
+  width: "100%",
 });
 
 export const hiddenBox = style({
