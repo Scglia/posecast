@@ -94,6 +94,13 @@ const PlayerUI = ({
     [-openPlayerHeight * 0.5, -openPlayerHeight],
     [0, 1]
   );
+
+  const queueCountOpacity = useTransform(
+    panY,
+    [-openPlayerHeight * 0.5, -openPlayerHeight],
+    [1, 0]
+  );
+
   const childOffset = useTransform(
     panY,
     [-openPlayerHeight * 0.5, -openPlayerHeight],
@@ -188,10 +195,13 @@ const PlayerUI = ({
           <div className={contentBox}>
             <div className={title}>{episodeTitle}</div>
             <div className={bottomLine}>
-              <div className={queueCount}>
+              <motion.div
+                className={queueCount}
+                style={{ opacity: queueCountOpacity }}
+              >
                 <QueueIcon />
                 <span>2</span>
-              </div>
+              </motion.div>
               <div className={bottomText}>
                 {isPlaying ? <PauseIcon /> : <PlayIcon />}
                 <span>
