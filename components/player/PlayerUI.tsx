@@ -84,28 +84,12 @@ const PlayerUI = ({
   const animationControls = useAnimation();
   const childAnimationControls = useAnimation();
   const panY = useMotionValue(0);
-  const playerOffset = useTransform(
-    panY,
-    [0, -openPlayerHeight],
-    [childrenHeight, 0]
-  );
-  const childOpacity = useTransform(
-    panY,
-    [-openPlayerHeight * 0.5, -openPlayerHeight],
-    [0, 1]
-  );
+  const playerOffset = useTransform(panY, [0, 1], [childrenHeight, 0]);
+  const childOpacity = useTransform(panY, [0.5, 1], [0, 1]);
 
-  const queueCountOpacity = useTransform(
-    panY,
-    [-openPlayerHeight * 0.5, -openPlayerHeight],
-    [1, 0]
-  );
+  const queueCountOpacity = useTransform(panY, [0.5, 1], [1, 0]);
 
-  const childOffset = useTransform(
-    panY,
-    [-openPlayerHeight * 0.5, -openPlayerHeight],
-    [32, 0]
-  );
+  const childOffset = useTransform(panY, [0.5, 1], [32, 0]);
 
   useEffect(() => {
     setOpenPlayerHeight(getComponentSize(playerRef.current).height);
@@ -133,19 +117,20 @@ const PlayerUI = ({
 
   const handlePan = (event: any, info: PanInfo) => {
     if (isOpen === false) {
-      panY.set(info.offset.y);
+      const closedOffset = -info.offset.y / openPlayerHeight;
+      panY.set(closedOffset);
     } else {
-      panY.set(info.offset.y - openPlayerHeight);
+      const openOffset = 1 - info.offset.y / openPlayerHeight;
+      panY.set(openOffset);
     }
   };
 
-  const PAN_THRESHOLD = 50;
+  const PAN_THRESHOLD = 0.2;
   const handlePanEnd = (event: any, info: PanInfo) => {
-    console.log("end", info);
     if (isOpen === false) {
       if (info.offset.y < -PAN_THRESHOLD) {
         setIsOpen(true);
-        animate(panY, -openPlayerHeight);
+        animate(panY, 1);
       } else {
         animate(panY, 0);
       }
@@ -155,14 +140,15 @@ const PlayerUI = ({
           setIsOpen(false);
         });
       } else {
-        animate(panY, -openPlayerHeight);
+        animate(panY, 1);
       }
     }
   };
 
-  console.log({ isOpen, isPanning });
   const overflowBoxHeight =
     isOpen || isPanning ? openPlayerHeight : closedPlayerHeight;
+
+  const showLoader = isLoading ? "flex" : "none";
 
   return (
     // READD {...handlers}
@@ -179,10 +165,7 @@ const PlayerUI = ({
       >
         <motion.div className={controls} onTap={handleTap}>
           <div className={episodeImage}>
-            <div
-              className={loadingBox}
-              style={{ display: isLoading ? "flex" : "none" }}
-            >
+            <div className={loadingBox} style={{ display: showLoader }}>
               <LoadingIcon className={loadingStyle} />
             </div>
             <img

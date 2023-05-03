@@ -5,7 +5,6 @@ export const box = style({
   backgroundColor: "rgb(33, 33, 33)",
   borderRadius: 12,
   padding: 12,
-  // transition: "visibility 0s, opacity 0.5s ease-out, transform 0.5s ease-out",
   opacity: "1",
   touchAction: "none",
   overflow: "hidden",
