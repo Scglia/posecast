@@ -70,7 +70,7 @@ const PodcastList = () => {
             <Link
               key={id}
               href={`/episodes/${id}`}
-              variant="noDecoration"
+              variant="unstyled"
               {...longPressSelectPodcast(id)}
             >
               <PodcastListItem

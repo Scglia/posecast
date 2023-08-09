@@ -37,7 +37,7 @@ export default function Home() {
           flexGrow: 1,
         }}
       >
-        <Link href="/podcasts" variant="noDecoration">
+        <Link href="/podcasts" variant="unstyled">
           <Button onClick={addExemplePodcasts}>
             Open the app with example podcasts
           </Button>
