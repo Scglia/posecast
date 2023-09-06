@@ -34,6 +34,37 @@ const Queue = () => {
             <ReorderIcon />
           </div>
         </div>
+        <div className={queueItem}>
+          <div className={episodeName}>
+            <div className={semiBold}>
+              457: Do Designers Need to Learn to Code?
+            </div>
+            <div className={podcastName}>Design Details</div>
+          </div>
+          <div className={reorder}>
+            <ReorderIcon />
+          </div>
+        </div>
+        <div className={queueItem}>
+          <div className={episodeName}>
+            <div className={semiBold}>458: How to Get a Job as a Designer</div>
+            <div className={podcastName}>Design Details</div>
+          </div>
+          <div className={reorder}>
+            <ReorderIcon />
+          </div>
+        </div>
+        <div className={queueItem}>
+          <div className={episodeName}>
+            <div className={semiBold}>
+              459: Managing Designers as a Designer
+            </div>
+            <div className={podcastName}>Design Details</div>
+          </div>
+          <div className={reorder}>
+            <ReorderIcon />
+          </div>
+        </div>
       </div>
     </>
   );

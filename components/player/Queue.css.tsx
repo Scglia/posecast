@@ -14,6 +14,8 @@ export const queueBox = style({
   paddingTop: 4,
   gap: 20,
   flexDirection: "column",
+  maxHeight: 250,
+  overflowY: "auto",
 });
 
 export const queueItem = style({

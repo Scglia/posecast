@@ -157,13 +157,16 @@ const PlayerUI = ({
       <motion.div
         ref={playerRef}
         animate={animationControls}
-        onPanStart={handlePanStart}
-        onPan={handlePan}
-        onPanEnd={handlePanEnd}
         className={episodeTitle ? box : hiddenBox}
         style={{ y: playerOffset }}
       >
-        <motion.div className={controls} onTap={handleTap}>
+        <motion.div
+          onPanStart={handlePanStart}
+          onPan={handlePan}
+          onPanEnd={handlePanEnd}
+          className={controls}
+          onTap={handleTap}
+        >
           <div className={episodeImage}>
             <div className={loadingBox} style={{ display: showLoader }}>
               <LoadingIcon className={loadingStyle} />
