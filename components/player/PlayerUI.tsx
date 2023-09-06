@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-import { SwipeCallback, useSwipeable } from "react-swipeable";
 import {
   motion,
   useAnimation,
@@ -37,15 +36,14 @@ type PlayerUIProps = {
   play: Function;
   pause: Function;
   isLoading: boolean;
-  onSwipeStart: SwipeCallback;
-  onSwiping: SwipeCallback;
-  onSwiped: SwipeCallback;
+  onSwipeStart: Function;
+  onSwiping: Function;
+  onSwiped: Function;
   children?: React.ReactNode;
 };
 
 function getComponentSize(componentRef: any) {
   const rect = componentRef.getBoundingClientRect();
-  console.log(rect);
   return {
     width: rect.width,
     height: rect.height,
@@ -66,14 +64,8 @@ const PlayerUI = ({
   onSwiped,
   children,
 }: PlayerUIProps) => {
-  const handlers = useSwipeable({
-    onSwiping: onSwiping,
-    onSwiped: onSwiped,
-    onSwipeStart: onSwipeStart,
-    trackMouse: true,
-  });
-
   const [isOpen, setIsOpen] = useState(false);
+  const [panAxis, setPanAxis] = useState<null | "x" | "y">(null);
   const [openPlayerHeight, setOpenPlayerHeight] = useState(0);
   const [childrenHeight, setChildrenHeight] = useState(0);
   const [isPanning, setIsPanning] = useState(false);
@@ -113,9 +105,16 @@ const PlayerUI = ({
 
   const handlePanStart = (event: any, info: PanInfo) => {
     setIsPanning(true);
+    const panAxis =
+      Math.abs(info.offset.x) > Math.abs(info.offset.y) ? "x" : "y";
+    setPanAxis(panAxis);
+
+    if (panAxis === "x") {
+      onSwipeStart();
+    }
   };
 
-  const handlePan = (event: any, info: PanInfo) => {
+  const handlePanY = (event: any, info: PanInfo) => {
     if (isOpen === false) {
       const closedOffset = -info.offset.y / openPlayerHeight;
       panY.set(closedOffset);
@@ -126,7 +125,7 @@ const PlayerUI = ({
   };
 
   const PAN_THRESHOLD = 0.2;
-  const handlePanEnd = (event: any, info: PanInfo) => {
+  const handlePanEndY = (event: any, info: PanInfo) => {
     if (isOpen === false) {
       if (info.offset.y < -PAN_THRESHOLD) {
         setIsOpen(true);
@@ -143,6 +142,33 @@ const PlayerUI = ({
         animate(panY, 1);
       }
     }
+  };
+
+  const handlePanX = (event: any, info: PanInfo) => {
+    onSwiping(info.offset.x);
+  };
+
+  const handlePanEndX = (event: any, info: PanInfo) => {
+    onSwiped(info.offset.x);
+  };
+
+  const handlePan = (event: any, info: PanInfo) => {
+    if (panAxis === "y") {
+      handlePanY(event, info);
+    } else if (panAxis === "x") {
+      handlePanX(event, info);
+    }
+  };
+
+  const handlePanEnd = (event: any, info: PanInfo) => {
+    if (panAxis === "y") {
+      handlePanEndY(event, info);
+    } else if (panAxis === "x") {
+      handlePanEndX(event, info);
+    }
+
+    setIsPanning(false);
+    setPanAxis(null);
   };
 
   const overflowBoxHeight =
