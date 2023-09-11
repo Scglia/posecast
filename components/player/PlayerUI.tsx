@@ -206,7 +206,7 @@ const PlayerUI = ({
                 style={{ opacity: queueCountOpacity }}
               >
                 <QueueIcon />
-                <span>2</span>
+                <span>4</span>
               </motion.div>
               <div className={bottomText}>
                 {isPlaying ? <PlayIcon /> : <PauseIcon />}
