@@ -33,12 +33,11 @@ type PlayerUIProps = {
   currentTime: string;
   episodeDuration: string;
   isPlaying: boolean;
-  play: Function;
-  pause: Function;
+  onTap: Function;
   isLoading: boolean;
   onSwipeStart: Function;
   onSwiping: Function;
-  onSwiped: Function;
+  onSwipeEnd: Function;
   children?: React.ReactNode;
 };
 
@@ -56,12 +55,11 @@ const PlayerUI = ({
   currentTime,
   episodeDuration,
   isPlaying,
-  play,
-  pause,
   isLoading,
+  onTap,
   onSwipeStart,
   onSwiping,
-  onSwiped,
+  onSwipeEnd,
   children,
 }: PlayerUIProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -93,15 +91,11 @@ const PlayerUI = ({
 
   const handleTap = useCallback(() => {
     if (!isPanning) {
-      if (isPlaying) {
-        pause();
-      } else {
-        play();
-      }
+      onTap();
     }
 
     setIsPanning(false);
-  }, [isPlaying, play, pause, isPanning]);
+  }, [onTap, isPanning]);
 
   const handlePanStart = (event: any, info: PanInfo) => {
     setIsPanning(true);
@@ -149,7 +143,7 @@ const PlayerUI = ({
   };
 
   const handlePanEndX = (event: any, info: PanInfo) => {
-    onSwiped(info.offset.x);
+    onSwipeEnd(info.offset.x);
   };
 
   const handlePan = (event: any, info: PanInfo) => {
@@ -215,7 +209,7 @@ const PlayerUI = ({
                 <span>2</span>
               </motion.div>
               <div className={bottomText}>
-                {isPlaying ? <PauseIcon /> : <PlayIcon />}
+                {isPlaying ? <PlayIcon /> : <PauseIcon />}
                 <span>
                   <span>
                     {currentTime} / {episodeDuration}

@@ -6,6 +6,6 @@
 
 # Queue
 
-- [ ] Swipe left/right vs up
+- [x] Swipe left/right vs up
 - [ ] Long press to reorder
 - [ ] Context menu

@@ -90,11 +90,19 @@ const PlayerWithAudio = () => {
     [width, currentTime, duration, setTimeOnSwipe]
   );
 
-  const onSwiped = useCallback(() => {
+  const onSwipeEnd = useCallback(() => {
     setIsBeingSwiped(false);
     setCurrentTime(timeOnSwipe);
     play();
   }, [setCurrentTime, timeOnSwipe, play, setIsBeingSwiped]);
+
+  const onTap = useCallback(() => {
+    if (isPlaying) {
+      pause();
+    } else {
+      play();
+    }
+  }, [isPlaying, play, pause]);
 
   return (
     <>
@@ -105,11 +113,10 @@ const PlayerWithAudio = () => {
       />
       <PlayerUI
         isPlaying={isPlaying}
-        play={play}
-        pause={pause}
+        onTap={onTap}
         isLoading={isLoading}
         onSwiping={onSwiping}
-        onSwiped={onSwiped}
+        onSwipeEnd={onSwipeEnd}
         onSwipeStart={onSwipeStart}
         episodeImageUrl={imageUrl}
         episodeTitle={title}

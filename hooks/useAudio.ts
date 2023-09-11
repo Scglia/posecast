@@ -78,6 +78,13 @@ const useAudio = (
     return throttle(func, 1000);
   }, [onTimeUpdateCallback]);
 
+  // Cleanup the throttled function
+  useEffect(() => {
+    return () => {
+      onTimeUpdate.cancel();
+    };
+  }, [onTimeUpdate]);
+
   const onEnded = useCallback(() => {
     dispatch({ type: "SET_IS_PLAYING", payload: false });
     dispatch({ type: "SET_CURRENT_TIME", payload: 0 });
@@ -98,6 +105,7 @@ const useAudio = (
       audio.src = url;
       play();
     } else {
+      // Seek to the initial timestamp on first load
       audio.currentTime = initialTimestamp;
     }
 
