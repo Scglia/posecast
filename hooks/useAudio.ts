@@ -96,6 +96,7 @@ const useAudio = (
     dispatch({ type: "SET_IS_LOADING", payload: false });
   }, []);
 
+  // Bind event listeners
   useEffect(() => {
     const audio = audioRef.current;
 
