@@ -1,167 +1,118 @@
-import { useReducer, useEffect, useRef, useCallback, useMemo } from "react";
-import throttle from "lodash/throttle";
+import { throttle } from "lodash";
+import { useState, useEffect, useRef } from "react";
 
-const initialState = {
-  audio: null,
-  duration: 0,
-  currentTime: 0,
-  isPlaying: false,
-  isLoading: true,
-  error: null,
-};
+interface AudioState {
+  duration: number;
+  currentTime: number;
+  isPlaying: boolean;
+  isLoading: boolean;
+  error: Error | null;
+}
 
-const audioReducer = (state: any, action: any) => {
-  switch (action.type) {
-    case "SET_DURATION":
-      return { ...state, duration: action.payload };
-    case "SET_CURRENT_TIME":
-      return { ...state, currentTime: action.payload };
-    case "SET_IS_PLAYING":
-      return { ...state, isPlaying: action.payload };
-    case "SET_IS_LOADING":
-      return { ...state, isLoading: action.payload };
-    case "SET_ERROR":
-      return { ...state, error: action.payload };
-    default:
-      throw new Error(`Unsupported action type: ${action.type}`);
-  }
-};
+const useAudio = (url: string, initialTime = 0, onTimeUpdate: Function) => {
+  const [audioState, setAudioState] = useState<AudioState>({
+    duration: 0,
+    currentTime: 0,
+    isPlaying: false,
+    isLoading: true,
+    error: null,
+  });
 
-const useAudio = (
-  url: string,
-  initialTimestamp = 0,
-  onTimeUpdateCallback: Function,
-  onEndedCallback: Function
-) => {
-  const [state, dispatch] = useReducer(audioReducer, initialState);
-  const audioRef = useRef<HTMLAudioElement>(new Audio(url));
-
-  const play = useCallback(() => {
-    audioRef.current.play();
-    dispatch({ type: "SET_IS_PLAYING", payload: true });
-  }, []);
-
-  const pause = useCallback(() => {
-    audioRef.current.pause();
-    dispatch({ type: "SET_IS_PLAYING", payload: false });
-  }, []);
-
-  const setCurrentTime = useCallback(
-    (timestamp: number) => {
-      audioRef.current.currentTime = timestamp;
-      dispatch({ type: "SET_CURRENT_TIME", payload: timestamp });
-      play();
-    },
-    [play]
-  );
-
-  const onLoadedMetadata = useCallback(() => {
-    dispatch({ type: "SET_DURATION", payload: audioRef.current.duration });
-  }, []);
-
-  const itsLoading = useCallback(() => {
-    dispatch({ type: "SET_IS_LOADING", payload: true });
-  }, []);
-
-  const notLoading = useCallback(() => {
-    dispatch({ type: "SET_IS_LOADING", payload: false });
-  }, []);
-
-  const onTimeUpdate = useMemo(() => {
-    const func = () => {
-      dispatch({
-        type: "SET_CURRENT_TIME",
-        payload: Math.trunc(audioRef.current.currentTime),
-      });
-      onTimeUpdateCallback({ currentTime: audioRef.current.currentTime });
-    };
-    return throttle(func, 1000);
-  }, [onTimeUpdateCallback]);
-
-  // Cleanup the throttled function
+  const initialTimeRef = useRef(initialTime);
+  // Update the ref whenever initialTime changes
   useEffect(() => {
+    initialTimeRef.current = initialTime;
+  }, [initialTime]);
+
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    const audio = new Audio(url);
+    audioRef.current = audio;
+
+    const setAudioData = () => {
+      setAudioState((prevState) => ({
+        ...prevState,
+        duration: audio.duration,
+        isLoading: false,
+      }));
+    };
+
+    const setTime = throttle(() => {
+      onTimeUpdate(audio.currentTime);
+      setAudioState((prevState) => ({
+        ...prevState,
+        currentTime: audio.currentTime,
+      }));
+    }, 1000); // Update once per second
+
+    const setPlay = () => {
+      setAudioState((prevState) => ({ ...prevState, isPlaying: true }));
+    };
+
+    const setPause = () => {
+      setAudioState((prevState) => ({ ...prevState, isPlaying: false }));
+    };
+
+    const setIsLoading = (isLoading: boolean) => {
+      setAudioState((prevState) => ({ ...prevState, isLoading }));
+    };
+
+    const handleError = (e: Event) => {
+      setAudioState((prevState) => ({
+        ...prevState,
+        error: e as unknown as Error,
+        isLoading: false,
+      }));
+    };
+
+    audio.addEventListener("loadedmetadata", setAudioData);
+    audio.addEventListener("timeupdate", setTime);
+    audio.addEventListener("play", setPlay);
+    audio.addEventListener("pause", setPause);
+    audio.addEventListener("error", handleError);
+    audio.addEventListener("waiting", () => setIsLoading(true));
+    audio.addEventListener("seeking", () => setIsLoading(true));
+    audio.addEventListener("seeked", () => setIsLoading(false));
+    audio.addEventListener("canplaythrough", () => setIsLoading(false));
+    audio.addEventListener("playing", () => setIsLoading(false));
+
+    // Reset currentTime when URL changes
+    const currentInitialTime = initialTimeRef.current;
+    setAudioState((prevState) => ({
+      ...prevState,
+      currentTime: currentInitialTime,
+    }));
+    audioRef.current.currentTime = currentInitialTime;
+
+    // Cleanup function
     return () => {
-      onTimeUpdate.cancel();
+      audio.removeEventListener("loadedmetadata", setAudioData);
+      audio.removeEventListener("timeupdate", setTime);
+      audio.removeEventListener("play", setPlay);
+      audio.removeEventListener("pause", setPause);
+      audio.removeEventListener("error", handleError);
+      audio.removeEventListener("waiting", () => setIsLoading(true));
+      audio.removeEventListener("seeking", () => setIsLoading(true));
+      audio.removeEventListener("seeked", () => setIsLoading(false));
+      audio.removeEventListener("canplaythrough", () => setIsLoading(false));
+      audio.removeEventListener("playing", () => setIsLoading(false));
     };
-  }, [onTimeUpdate]);
+  }, [url, onTimeUpdate]);
 
-  const onEnded = useCallback(() => {
-    dispatch({ type: "SET_IS_PLAYING", payload: false });
-    dispatch({ type: "SET_CURRENT_TIME", payload: 0 });
-    onEndedCallback();
-  }, [onEndedCallback]);
-
-  const onError = useCallback((error: ErrorEvent) => {
-    dispatch({ type: "SET_ERROR", payload: error });
-    dispatch({ type: "SET_IS_LOADING", payload: false });
-  }, []);
-
-  // Bind event listeners
-  useEffect(() => {
-    const audio = audioRef.current;
-
-    // Autoplay when the user selects a new episode
-    if (audio.src !== url) {
-      onEnded();
-      audio.src = url;
-      play();
-    } else {
-      // Seek to the initial timestamp on first load
-      audio.currentTime = initialTimestamp;
+  const play = () => audioRef.current?.play();
+  const pause = () => audioRef.current?.pause();
+  const seek = (time: number) => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = time;
     }
-
-    audio.addEventListener("loadedmetadata", onLoadedMetadata);
-    audio.addEventListener("timeupdate", onTimeUpdate);
-    audio.addEventListener("ended", onEnded);
-    audio.addEventListener("error", onError);
-    audio.addEventListener("play", play);
-    audio.addEventListener("pause", pause);
-
-    // Loading state
-    audio.addEventListener("canplaythrough", notLoading);
-    audio.addEventListener("waiting", itsLoading);
-    audio.addEventListener("playing", notLoading);
-    audio.addEventListener("seeking", itsLoading);
-    audio.addEventListener("seeked", notLoading);
-
-    return () => {
-      audio.pause();
-      audio.removeEventListener("loadedmetadata", onLoadedMetadata);
-      audio.removeEventListener("timeupdate", onTimeUpdate);
-      audio.removeEventListener("ended", onEnded);
-      audio.removeEventListener("error", onError);
-      audio.removeEventListener("canplaythrough", notLoading);
-      audio.removeEventListener("waiting", itsLoading);
-      audio.removeEventListener("playing", notLoading);
-      audio.removeEventListener("seeking", itsLoading);
-      audio.removeEventListener("seeked", notLoading);
-      audio.removeEventListener("play", play);
-      audio.removeEventListener("pause", pause);
-    };
-  }, [
-    url,
-    initialTimestamp,
-    play,
-    pause,
-    onTimeUpdateCallback,
-    onEndedCallback,
-    onError,
-    onLoadedMetadata,
-    onTimeUpdate,
-    onEnded,
-    itsLoading,
-    notLoading,
-  ]);
+  };
 
   return {
-    currentTime: state.currentTime,
-    duration: state.duration,
-    isPlaying: state.isPlaying,
-    isLoading: state.isLoading,
-    error: state.error,
+    ...audioState,
     play,
     pause,
-    setCurrentTime,
+    seek,
   };
 };
 

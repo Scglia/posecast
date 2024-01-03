@@ -52,28 +52,9 @@ const PlayerWithAudio = () => {
   const [isBeingSwiped, setIsBeingSwiped] = useState(false);
   const [timeOnSwipe, setTimeOnSwipe] = useState<any>(1);
   const { width } = useWindowSize();
-  const [initialTime] = useState(savedCurrentTime);
 
-  const onTimeUpdate = useCallback(
-    ({ currentTime }: { currentTime: number }) => {
-      setSavedCurrentTime(currentTime);
-    },
-    [setSavedCurrentTime]
-  );
-
-  const onEnded = useCallback(() => {
-    setSavedCurrentTime(0);
-  }, [setSavedCurrentTime]);
-
-  const {
-    currentTime,
-    duration,
-    isPlaying,
-    play,
-    pause,
-    setCurrentTime,
-    isLoading,
-  } = useAudio(episodeUrl, initialTime, onTimeUpdate, onEnded);
+  const { currentTime, duration, isPlaying, play, pause, seek, isLoading } =
+    useAudio(episodeUrl, savedCurrentTime, setSavedCurrentTime);
 
   const onSwipeStart = useCallback(() => {
     setIsBeingSwiped(true);
@@ -92,9 +73,9 @@ const PlayerWithAudio = () => {
 
   const onSwipeEnd = useCallback(() => {
     setIsBeingSwiped(false);
-    setCurrentTime(timeOnSwipe);
+    seek(timeOnSwipe);
     play();
-  }, [setCurrentTime, timeOnSwipe, play, setIsBeingSwiped]);
+  }, [seek, timeOnSwipe, play, setIsBeingSwiped]);
 
   const onTap = useCallback(() => {
     if (isPlaying) {

@@ -1,3 +1,4 @@
+- Component no-ssr?
 - [ ] Typescript
 - [ ] Memoization, optimising renders
 - [ ] CSS Theming
