@@ -23,7 +23,7 @@ export const playerBox = style({
   left: 0,
   right: 0,
   background:
-    "linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.89) 100%)",
+    "linear-gradient(to top, rgba(0,0,0,0.89) 0, rgba(0,0,0,0) 104px)",
 });
 
 export const buttons = style({

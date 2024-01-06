@@ -6,26 +6,27 @@ import usePlayerStore from "../../stores/playerStore";
 import clamp from "../../resources/helpers/clamp";
 import useWindowSize from "../../hooks/useWindowSize";
 import TimeOverlay from "./TimeOverlay";
+import Queue from "./Queue";
 
-type Side = "Left" | "Right";
-const multiplierConversionTable = { Left: -1, Right: 1 };
+const PLAYER_PADDING = 48;
+const DEFAULT_VIEWPORT_WIDTH = 300;
 
+// Absolute value of ratio Swipe distance / Viewport width
 const getRatio = (deltaX: number, width?: number) => {
-  const viewportWidth = width ? width - 48 : 300; // 48 is the width of the player's padding
+  const viewportWidth = width ? width - PLAYER_PADDING : DEFAULT_VIEWPORT_WIDTH;
 
   // The ratio is squared to make the swipe more precise at the beginning
-  return Math.min(Math.abs(Math.pow(deltaX / viewportWidth, 2)), 1);
+  return Math.min(Math.pow(deltaX / viewportWidth, 2), 1);
 };
 
 const calculateTimeOnSwipe = (
   delta: number,
-  direction: Side,
   currentTime: number,
   duration: number,
   width?: number
 ) => {
   const swipeRatio = getRatio(delta, width);
-  const directionMultiplier = multiplierConversionTable[direction];
+  const directionMultiplier = delta > 0 ? 1 : -1;
   const newTime = Math.trunc(
     currentTime + swipeRatio * directionMultiplier * duration
   );
@@ -51,28 +52,9 @@ const PlayerWithAudio = () => {
   const [isBeingSwiped, setIsBeingSwiped] = useState(false);
   const [timeOnSwipe, setTimeOnSwipe] = useState<any>(1);
   const { width } = useWindowSize();
-  const [initialTime] = useState(savedCurrentTime);
 
-  const onTimeUpdate = useCallback(
-    ({ currentTime }: { currentTime: number }) => {
-      setSavedCurrentTime(currentTime);
-    },
-    [setSavedCurrentTime]
-  );
-
-  const onEnded = useCallback(() => {
-    setSavedCurrentTime(0);
-  }, [setSavedCurrentTime]);
-
-  const {
-    currentTime,
-    duration,
-    isPlaying,
-    play,
-    pause,
-    setCurrentTime,
-    isLoading,
-  } = useAudio(episodeUrl, initialTime, onTimeUpdate, onEnded);
+  const { currentTime, duration, isPlaying, play, pause, seek, isLoading } =
+    useAudio(episodeUrl, savedCurrentTime, setSavedCurrentTime);
 
   const onSwipeStart = useCallback(() => {
     setIsBeingSwiped(true);
@@ -80,28 +62,28 @@ const PlayerWithAudio = () => {
   }, [setIsBeingSwiped, pause]);
 
   const onSwiping = useCallback(
-    (eventData: any) => {
-      if (eventData.dir == "Left" || eventData.dir == "Right") {
-        // When swiping horizontally, the time is calculated based on the swipe's distance and direction
-        setTimeOnSwipe(
-          calculateTimeOnSwipe(
-            eventData.deltaX,
-            eventData.dir,
-            currentTime,
-            duration,
-            width
-          )
-        );
-      }
+    (swipeDelta: number) => {
+      // When swiping horizontally, the time is calculated based on the swipe's distance and direction
+      setTimeOnSwipe(
+        calculateTimeOnSwipe(swipeDelta, currentTime, duration, width)
+      );
     },
     [width, currentTime, duration, setTimeOnSwipe]
   );
 
-  const onSwiped = useCallback(() => {
+  const onSwipeEnd = useCallback(() => {
     setIsBeingSwiped(false);
-    setCurrentTime(timeOnSwipe);
+    seek(timeOnSwipe);
     play();
-  }, [setCurrentTime, timeOnSwipe, play, setIsBeingSwiped]);
+  }, [seek, timeOnSwipe, play, setIsBeingSwiped]);
+
+  const onTap = useCallback(() => {
+    if (isPlaying) {
+      pause();
+    } else {
+      play();
+    }
+  }, [isPlaying, play, pause]);
 
   return (
     <>
@@ -112,17 +94,18 @@ const PlayerWithAudio = () => {
       />
       <PlayerUI
         isPlaying={isPlaying}
-        play={play}
-        pause={pause}
+        onTap={onTap}
         isLoading={isLoading}
         onSwiping={onSwiping}
-        onSwiped={onSwiped}
+        onSwipeEnd={onSwipeEnd}
         onSwipeStart={onSwipeStart}
         episodeImageUrl={imageUrl}
         episodeTitle={title}
         currentTime={formatTimeFromSeconds(currentTime)}
         episodeDuration={formatTimeFromSeconds(duration)}
-      />
+      >
+        <Queue />
+      </PlayerUI>
     </>
   );
 };

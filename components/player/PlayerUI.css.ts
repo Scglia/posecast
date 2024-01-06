@@ -2,19 +2,31 @@ import { style, keyframes } from "@vanilla-extract/css";
 import { regular, semiBold } from "../../styles/fonts.css";
 
 export const box = style({
-  display: "flex",
-  gap: 12,
   backgroundColor: "rgb(33, 33, 33)",
   borderRadius: 12,
   padding: 12,
-  transition: "visibility 0s, opacity 0.5s ease-out, transform 0.5s ease-out",
-  transform: "translateY(0)",
   opacity: "1",
+  touchAction: "none",
+  overflow: "hidden",
+  width: "100%",
 });
 
 export const hiddenBox = style({
   transform: "translateY(30%)",
   opacity: "0",
+});
+
+export const overflowBox = style({
+  position: "relative",
+  overflow: "hidden",
+  borderRadius: 12,
+  display: "flex",
+  alignItems: "flex-end",
+});
+
+export const controls = style({
+  display: "flex",
+  gap: 12,
 });
 
 export const episodeImage = style({
@@ -63,9 +75,11 @@ export const title = style([
   semiBold,
   {
     width: "100%",
-    whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
+    display: "-webkit-box",
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: "vertical",
   },
 ]);
 
@@ -77,14 +91,30 @@ export const bottomLine = style({
   gap: 6,
 });
 
-export const times = style([
+export const bottomText = style([
   regular,
   {
     fontVariantNumeric: "tabular-nums",
+    display: "flex",
+    gap: 8,
   },
 ]);
 
-export const buttons = style({
-  display: "flex",
-  gap: 12,
-});
+export const queueCount = style([
+  bottomText,
+  {
+    color: "rgb(186, 186, 186)",
+    gap: 4,
+  },
+]);
+
+// export const queueBoxRelative = style({
+//   position: "relative",
+// });
+
+// export const queueBox = style({
+//   position: "absolute",
+//   top: 12,
+//   left: 0,
+//   right: 0,
+// });

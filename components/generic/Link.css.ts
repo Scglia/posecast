@@ -12,7 +12,7 @@ const linkVariants = {
       whiteSpace: "nowrap",
     },
   ],
-  noDecoration: { textDecoration: "none", color: "inherit" },
+  unstyled: { textDecoration: "none", color: "inherit" },
 };
 
 export type LinkVariantsType = keyof typeof linkVariants;

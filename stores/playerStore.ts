@@ -20,7 +20,7 @@ const usePlayerStore = create(
           title: params.title,
           episodeUrl: params.episodeUrl,
           episodeId: params.episodeId,
-          currentTime: undefined,
+          currentTime: 0,
         }));
       },
       setCurrentTime: (currentTime: number) => {
