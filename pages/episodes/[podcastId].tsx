@@ -13,6 +13,7 @@ import PodcastDetails from "../../components/podcast-details/PodcastDetails";
 import Button from "../../components/generic/Button";
 import Link from "../../components/generic/Link";
 import TextInput from "../../components/generic/TextInput";
+import Title from "../../components/generic/Title";
 import { useState } from "react";
 import usePodcastsStore from "../../stores/podcastsStore";
 import { regular } from "../../styles/fonts.css";
@@ -32,6 +33,7 @@ export default function Episodes() {
 
   return (
     <>
+      <Title />
       <div className={topSectionBox}>
         <div className={podcastDetailsBox}>
           <div className={buttons}>

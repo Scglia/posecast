@@ -15,7 +15,6 @@ export default function Document() {
         <meta name="msapplication-TileColor" content="#000" />
         <meta name="msapplication-tap-highlight" content="no" />
         <meta name="theme-color" content="#000000" />
-
         <link rel="apple-touch-icon" href="/icons/touch-icon-iphone.png" />
         <link
           rel="apple-touch-icon"
@@ -32,7 +31,6 @@ export default function Document() {
           sizes="167x167"
           href="/icons/touch-icon-ipad-retina.png"
         />
-
         <link
           rel="icon"
           type="image/png"
@@ -60,9 +58,7 @@ export default function Document() {
           name="twitter:image"
           content="https://yourdomain.com/icons/android-chrome-192x192.png"
         />
-        <meta name="twitter:creator" content="@DavidWShadow" />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="Posecast" />
         <meta property="og:description" content="Posecast" />
         <meta property="og:site_name" content="Posecast" />
         <meta property="og:url" content="https://tristanscaglia.com" />

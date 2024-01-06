@@ -4,6 +4,7 @@ import DynamicPodcastList from "../components/podcast-list/DynamicPodcastList";
 import { useState } from "react";
 import usePodcastsStore from "../stores/podcastsStore";
 import InputWithButton from "../components/input-with-button/InputWithButton";
+import Title from "../components/generic/Title";
 
 export default function Podcasts() {
   const [newRSSFeed, setNewRSSFeed] = useState("");
@@ -19,6 +20,7 @@ export default function Podcasts() {
   }
   return (
     <>
+      <Title />
       <form className={addPodcastBox} onSubmit={handleSubmit}>
         <InputWithButton
           inputValue={newRSSFeed}

@@ -4,6 +4,7 @@ import getPodcastsData from "../resources/data/podcastsData";
 import { regular } from "../styles/fonts.css";
 import usePodcastsStore from "../stores/podcastsStore";
 import Link from "../components/generic/Link";
+import Title from "../components/generic/Title";
 
 export default function Home() {
   const addPodcast = usePodcastsStore((state: any) => state.addPodcast);
@@ -23,6 +24,7 @@ export default function Home() {
         flexWrap: "wrap",
       }}
     >
+      <Title />
       <div style={{ width: "100%" }}>
         <span style={{ color: "rgb(186, 186, 186)" }}>Welcome to posecast</span>{" "}
         <br />
