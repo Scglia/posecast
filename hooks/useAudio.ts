@@ -58,6 +58,9 @@ const useAudio = (url: string, initialTime = 0, onTimeUpdate: Function) => {
       setAudioState((prevState) => ({ ...prevState, isLoading }));
     };
 
+    const setIsLoadingTrue = () => setIsLoading(true);
+    const setIsLoadingFalse = () => setIsLoading(false);
+
     const handleError = (e: Event) => {
       setAudioState((prevState) => ({
         ...prevState,
@@ -71,11 +74,11 @@ const useAudio = (url: string, initialTime = 0, onTimeUpdate: Function) => {
     audio.addEventListener("play", setPlay);
     audio.addEventListener("pause", setPause);
     audio.addEventListener("error", handleError);
-    audio.addEventListener("waiting", () => setIsLoading(true));
-    audio.addEventListener("seeking", () => setIsLoading(true));
-    audio.addEventListener("seeked", () => setIsLoading(false));
-    audio.addEventListener("canplaythrough", () => setIsLoading(false));
-    audio.addEventListener("playing", () => setIsLoading(false));
+    audio.addEventListener("waiting", setIsLoadingTrue);
+    audio.addEventListener("seeking", setIsLoadingTrue);
+    audio.addEventListener("seeked", setIsLoadingFalse);
+    audio.addEventListener("canplaythrough", setIsLoadingFalse);
+    audio.addEventListener("playing", setIsLoadingFalse);
 
     // Reset currentTime when URL changes
     const currentInitialTime = initialTimeRef.current;
@@ -87,16 +90,21 @@ const useAudio = (url: string, initialTime = 0, onTimeUpdate: Function) => {
 
     // Cleanup function
     return () => {
+      audio.pause();
+      setPause();
+      audio.currentTime = 0;
+      setTime.cancel();
+
       audio.removeEventListener("loadedmetadata", setAudioData);
       audio.removeEventListener("timeupdate", setTime);
       audio.removeEventListener("play", setPlay);
       audio.removeEventListener("pause", setPause);
       audio.removeEventListener("error", handleError);
-      audio.removeEventListener("waiting", () => setIsLoading(true));
-      audio.removeEventListener("seeking", () => setIsLoading(true));
-      audio.removeEventListener("seeked", () => setIsLoading(false));
-      audio.removeEventListener("canplaythrough", () => setIsLoading(false));
-      audio.removeEventListener("playing", () => setIsLoading(false));
+      audio.removeEventListener("waiting", setIsLoadingTrue);
+      audio.removeEventListener("seeking", setIsLoadingTrue);
+      audio.removeEventListener("seeked", setIsLoadingFalse);
+      audio.removeEventListener("canplaythrough", setIsLoadingFalse);
+      audio.removeEventListener("playing", setIsLoadingFalse);
     };
   }, [url, onTimeUpdate]);
 
