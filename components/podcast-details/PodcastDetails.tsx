@@ -11,6 +11,10 @@ type PodcastDetailsProps = {
   podcastWebsite: string;
 };
 
+const stripTags = (html: string) => {
+  return html.replace(/<[^>]*>?/gm, "");
+};
+
 const PodcastDetails = ({
   podcastImgUrl,
   podcastTitle,
@@ -24,7 +28,7 @@ const PodcastDetails = ({
         podcastImgUrl={podcastImgUrl}
         podcastTitle={podcastTitle}
       />
-      <div className={regular}>{podcastDescription}</div>
+      <div className={regular}>{stripTags(podcastDescription)}</div>
       <div className={metadata}>
         <span className={episodeQuantity}>
           {podcastEpisodeQuantity ? `${podcastEpisodeQuantity} episodes` : null}
