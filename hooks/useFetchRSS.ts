@@ -1,24 +1,20 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
-export default function useFetchRSS(url: any) {
-  const [data, setData] = useState<any>(null);
-  const [error, setError] = useState(null);
-  const [isLoading, setLoading] = useState(false);
+async function fetchRSS(url: string) {
+  const response = await fetch(`/api/fetch-rss?url=${encodeURIComponent(url)}`);
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+  return response.json();
+}
 
-  useEffect(() => {
-    (async function () {
-      try {
-        setLoading(true);
-        const response = await fetch(`/api/fetch-rss?url=${url}`);
-        const jsonData = await response.json();
-        setData(jsonData);
-      } catch (err: any) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [url]);
+export default function useFetchRSS(url: string) {
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["rss", url],
+    queryFn: () => fetchRSS(url),
+    enabled: !!url,
+  });
 
+  console.log(data);
   return { data, error, isLoading };
 }

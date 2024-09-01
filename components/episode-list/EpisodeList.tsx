@@ -23,14 +23,14 @@ const EpisodeList = ({ podcastId, rssFeed, filter }: EpisodeListProps) => {
   );
 
   useEffect(() => {
-    if (data !== null) {
+    if (data) {
       setEpisodeQuantity(podcastId, data.items.length);
     }
   }, [data, podcastId, setEpisodeQuantity]);
 
   if (isLoading) return <Loading />;
   if (error)
-    return <p className={regular}>this podcast couldn&apos;t be loaded</p>;
+    return <p className={regular}>This podcast couldn&apos;t be loaded</p>;
   if (!data) return null;
 
   const episodes = data.items.filter((item: any) => {
