@@ -84,4 +84,23 @@ import PlayIcon from "../../resources/icons/play_small.svg";
 
 ## Security notes
 
-- Validate/guard `pages/api/fetch-rss` if deploying publicly (allowlist domains, timeouts, size limits).
+- The RSS proxy (`pages/api/fetch-rss.ts`) enforces:
+
+  - Input validation (URL string only), GET-only method
+  - SSRF protections: DNS resolution + block private, loopback, link-local, metadata IP ranges; block `localhost`
+  - Optional host allowlist in production
+  - Timeouts (10s total), redirect cap (3), and response size limit (~2.5MB)
+  - Basic per-IP rate limiting (best-effort, in-memory)
+  - Content-type and body sniffing checks (XML/Atom/RSS)
+  - Sanitization and item cap (max 500 items)
+  - 5-minute private cache of successful responses
+
+- Environment variables:
+
+  - `RSS_ALLOWED_HOSTS`: Comma-separated list of hostnames allowed in production (e.g. `feeds.simplecast.com,feeds.megaphone.fm,www.heavybit.com`).
+  - `RSS_ALLOW_ALL_HOSTS`: Set to `true` to allow any host (not recommended in production). Default: allowed only in development.
+  - `RSS_ALLOW_HTTP`: Set to `true` to allow `http:` (non-TLS) URLs. Default: allowed in development, blocked in production.
+
+- Defaults:
+  - Development: all hosts allowed, HTTP allowed (for convenience).
+  - Production: HTTPS required and hosts must be in `RSS_ALLOWED_HOSTS` unless `RSS_ALLOW_ALL_HOSTS=true`.

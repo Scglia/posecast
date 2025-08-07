@@ -34,7 +34,9 @@ const usePodcastsStore = create(
           fetchStatus: "LOADING",
         }));
 
-        const response = await fetch(`/api/fetch-rss?url=${rssUrl}`)
+        const response = await fetch(
+          `/api/fetch-rss?url=${encodeURIComponent(rssUrl)}`
+        )
           .then((response) => {
             if (response.status >= 400 && response.status < 600) {
               throw new Error("Bad response from server");
