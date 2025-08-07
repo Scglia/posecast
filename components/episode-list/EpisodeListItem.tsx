@@ -11,6 +11,7 @@ type EpisodeListItemProps = {
   episodeDuration: string;
   episodeReleaseDate: string;
   isSelected: boolean;
+  onClickPlay?: () => void;
 };
 
 const EpisodeListItem = ({
@@ -18,9 +19,13 @@ const EpisodeListItem = ({
   episodeDuration,
   episodeReleaseDate,
   isSelected,
+  onClickPlay,
 }: EpisodeListItemProps) => {
   return (
-    <div className={`${box} ${isSelected ? "selected" : ""}`}>
+    <div
+      className={`${box} ${isSelected ? "selected" : ""}`}
+      onClick={onClickPlay}
+    >
       <div className={semiBold}>{episodeTitle}</div>
       <div className={metadata}>
         <ClockIcon />
