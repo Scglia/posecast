@@ -41,9 +41,13 @@ const EpisodeList = ({ podcastId, rssFeed, filter }: EpisodeListProps) => {
     <div className={box}>
       {episodes.map((item: any, index: number) => {
         return (
-          <div
+          <EpisodeListItem
             key={item.guid}
-            onClick={() => {
+            episodeTitle={item.title}
+            episodeReleaseDate={item.pubDate}
+            episodeDuration={item.itunes.duration}
+            isSelected={item.guid === episodeId}
+            onClickPlay={() => {
               setPlayerData({
                 imageUrl: data.image.url,
                 title: item.title,
@@ -51,14 +55,7 @@ const EpisodeList = ({ podcastId, rssFeed, filter }: EpisodeListProps) => {
                 episodeId: item.guid,
               });
             }}
-          >
-            <EpisodeListItem
-              episodeTitle={item.title}
-              episodeReleaseDate={item.pubDate}
-              episodeDuration={item.itunes.duration}
-              isSelected={item.guid === episodeId}
-            />
-          </div>
+          />
         );
       })}
     </div>
